@@ -246,7 +246,7 @@ namespace CamperMod.Modules {
             characterDirection.rootMotionAccumulator = null;
             characterDirection.modelAnimator = modelTransform.GetComponent<Animator>();
             characterDirection.driveFromRootRotation = false;
-            characterDirection.turnSpeed = 720f;
+            characterDirection.turnSpeed = 260f;
         }
 
         private static void SetupCameraTargetParams(GameObject prefab, BodyInfo bodyInfo)

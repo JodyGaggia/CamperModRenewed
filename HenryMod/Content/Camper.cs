@@ -19,8 +19,8 @@ namespace CamperMod.Modules.Survivors
         public override BodyInfo bodyInfo { get; set; } = new BodyInfo
         {
             bodyName = "CamperBody",
-            bodyNameToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_NAME",
-            subtitleNameToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_SUBTITLE",
+            bodyNameToken = CAMPER_PREFIX + "NAME",
+            subtitleNameToken = CAMPER_PREFIX + "SUBTITLE",
 
             characterPortrait = Assets.mainAssetBundle.LoadAsset<Texture>("texCamperIcon"),
             bodyColor = Color.white,
@@ -62,7 +62,6 @@ namespace CamperMod.Modules.Survivors
 
         public override void InitializeUnlockables()
         {
-            //uncomment this when you have a mastery skin. when you do, make sure you have an icon too
             //masterySkinUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.MasteryAchievement>();
         }
 
@@ -84,40 +83,37 @@ namespace CamperMod.Modules.Survivors
         public override void InitializeSkills()
         {
             Modules.Skills.CreateSkillFamilies(bodyPrefab);
-            string prefix = CamperPlugin.DEVELOPER_PREFIX;
+            string prefix = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_";
 
             #region Primary
-            SkillDef primarySkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_CAMPER_BODY_PRIMARY_TEABAG_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_PRIMARY_TEABAG_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texTeabag"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Teabag)),
-                activationStateMachineName = "Weapon",
-                canceledFromSprinting = true
-            });
+            SkillDef primarySkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo(prefix + "PRIMARY_TEABAG_NAME",
+                                                                          prefix + "PRIMARY_TEABAG_DESCRIPTION",
+                                                                          Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texTeabag"),
+                                                                          new string[] { "KEYWORD_INFURIATING" },
+                                                                          new EntityStates.SerializableEntityStateType(typeof(SkillStates.Teabag)),
+                                                                          "Weapon",
+                                                                          false));
+
 
             Modules.Skills.AddPrimarySkills(bodyPrefab, primarySkillDef);
+            
+            SkillDef primarySkillDef2 = Modules.Skills.CreateSkillDef(new SkillDefInfo(prefix + "PRIMARY_SLAP_NAME",
+                                                                                      prefix + "PRIMARY_SLAP_DESCRIPTION",
+                                                                                      Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texTeabag"),
+                                                                                      new string[] { "KEYWORD_AGILE"},
+                                                                                      new EntityStates.SerializableEntityStateType(typeof(SkillStates.Slap)),
+                                                                                      "Weapon",
+                                                                                      true));
 
-            SkillDef primary2SkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "_CAMPER_BODY_PRIMARY_SLAP_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_PRIMARY_SLAP_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texTeabag"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Slap)),
-                activationStateMachineName = "Weapon",
-                canceledFromSprinting = false
-            });
-
-            Modules.Skills.AddPrimarySkills(bodyPrefab, primary2SkillDef);
+            Modules.Skills.AddPrimarySkills(bodyPrefab, primarySkillDef2);
             #endregion
 
             #region Secondary
             SkillDef firecrackerDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "_CAMPER_BODY_SECONDARY_FIRECRACKER_NAME",
-                skillNameToken = prefix + "_CAMPER_BODY_SECONDARY_FIRECRACKER_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_SECONDARY_FIRECRACKER_DESCRIPTION",
+                skillName = prefix + "SECONDARY_FIRECRACKER_NAME",
+                skillNameToken = prefix + "SECONDARY_FIRECRACKER_NAME",
+                skillDescriptionToken = prefix + "SECONDARY_FIRECRACKER_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFirecracker"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.DropFirecracker)),
                 activationStateMachineName = "Slide",
@@ -142,9 +138,9 @@ namespace CamperMod.Modules.Survivors
 
             SkillDef remoteFirecrackerDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "_CAMPER_BODY_SECONDARY_FIRECRACKER_NAME",
-                skillNameToken = prefix + "_CAMPER_BODY_SECONDARY_FIRECRACKER_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_SECONDARY_FIRECRACKER_DESCRIPTION",
+                skillName = prefix + "SECONDARY_FIRECRACKER_NAME",
+                skillNameToken = prefix + "SECONDARY_FIRECRACKER_NAME",
+                skillDescriptionToken = prefix + "SECONDARY_FIRECRACKER_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFirecracker"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.RemoteFirecracker)),
                 activationStateMachineName = "Slide",
@@ -171,9 +167,9 @@ namespace CamperMod.Modules.Survivors
             #region Utility
             SkillDef deadHardDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "_CAMPER_BODY_UTILITY_DEADHARD_NAME",
-                skillNameToken = prefix + "_CAMPER_BODY_UTILITY_DEADHARD_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_UTILITY_DEADHARD_DESCRIPTION",
+                skillName = prefix + "UTILITY_DEADHARD_NAME",
+                skillNameToken = prefix + "UTILITY_DEADHARD_NAME",
+                skillDescriptionToken = prefix + "UTILITY_DEADHARD_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texDeadHard"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.DeadHard)),
                 activationStateMachineName = "Body",
@@ -197,9 +193,9 @@ namespace CamperMod.Modules.Survivors
 
             SkillDef sprintBurstDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "_CAMPER_BODY_UTILITY_SPRINTBURST_NAME",
-                skillNameToken = prefix + "_CAMPER_BODY_UTILITY_SPRINTBURST_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_UTILITY_SPRINTBURST_DESCRIPTION",
+                skillName = prefix + "UTILITY_SPRINTBURST_NAME",
+                skillNameToken = prefix + "UTILITY_SPRINTBURST_NAME",
+                skillDescriptionToken = prefix + "UTILITY_SPRINTBURST_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texSprintBurst"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.SprintBurst)),
                 activationStateMachineName = "Slide",
@@ -223,9 +219,9 @@ namespace CamperMod.Modules.Survivors
 
             SkillDef balancedLandingDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "_CAMPER_BODY_UTILITY_BALANCEDLANDING_NAME",
-                skillNameToken = prefix + "_CAMPER_BODY_UTILITY_BALANCEDLANDING_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_UTILITY_BALANCEDLANDING_DESCRIPTION",
+                skillName = prefix + "UTILITY_BALANCEDLANDING_NAME",
+                skillNameToken = prefix + "UTILITY_BALANCEDLANDING_NAME",
+                skillDescriptionToken = prefix + "UTILITY_BALANCEDLANDING_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texBalancedLanding"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.BalancedLanding)),
                 activationStateMachineName = "Slide",
@@ -251,9 +247,9 @@ namespace CamperMod.Modules.Survivors
             #region Special
             SkillDef selfCareDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "_CAMPER_BODY_SPECIAL_SELFCARE_NAME",
-                skillNameToken = prefix + "_CAMPER_BODY_SPECIAL_SELFCARE_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_SPECIAL_SELFCARE_DESCRIPTION",
+                skillName = prefix + "SPECIAL_SELFCARE_NAME",
+                skillNameToken = prefix + "SPECIAL_SELFCARE_NAME",
+                skillDescriptionToken = prefix + "SPECIAL_SELFCARE_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texSelfCare"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.SelfCare)),
                 activationStateMachineName = "Body",
@@ -278,9 +274,9 @@ namespace CamperMod.Modules.Survivors
 
             SkillDef medkitDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "_CAMPER_BODY_SPECIAL_MEDKIT_NAME",
-                skillNameToken = prefix + "_CAMPER_BODY_SPECIAL_MEDKIT_NAME",
-                skillDescriptionToken = prefix + "_CAMPER_BODY_SPECIAL_MEDKIT_DESCRIPTION",
+                skillName = prefix + "SPECIAL_MEDKIT_NAME",
+                skillNameToken = prefix + "SPECIAL_MEDKIT_NAME",
+                skillDescriptionToken = prefix + "SPECIAL_MEDKIT_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texMedkit"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Medkit)),
                 activationStateMachineName = "Body",
@@ -329,58 +325,6 @@ namespace CamperMod.Modules.Survivors
 
             //add new skindef to our list of skindefs. this is what we'll be passing to the SkinController
             skins.Add(defaultSkin);
-            #endregion
-
-            #region NeaSkin
-            SkinDef neaSkin = Modules.Skins.CreateSkinDef(CAMPER_PREFIX + "NEA_SKIN_NAME",
-                Assets.mainAssetBundle.LoadAsset<Sprite>("texMasteryAchievement"),
-                defaultRendererinfos,
-                model);
-
-            //these are your Mesh Replacements. The order here is based on your CustomRendererInfos from earlier
-            //pass in meshes as they are named in your assetbundle
-            neaSkin.meshReplacements = Modules.Skins.getMeshReplacements(defaultRendererinfos, "meshNeaDefault");
-
-            //add new skindef to our list of skindefs. this is what we'll be passing to the SkinController
-            skins.Add(neaSkin);
-            #endregion
-
-            //uncomment this when you have a mastery skin
-            #region MasterySkin
-            /*
-            //creating a new skindef as we did before
-            SkinDef masterySkin = Modules.Skins.CreateSkinDef(HenryPlugin.DEVELOPER_PREFIX + "_HENRY_BODY_MASTERY_SKIN_NAME",
-                Assets.mainAssetBundle.LoadAsset<Sprite>("texMasteryAchievement"),
-                defaultRendererinfos,
-                model,
-                masterySkinUnlockableDef);
-
-            //adding the mesh replacements as above. 
-            //if you don't want to replace the mesh (for example, you only want to replace the material), pass in null so the order is preserved
-            masterySkin.meshReplacements = Modules.Skins.getMeshReplacements(defaultRendererinfos,
-                "meshHenrySwordAlt",
-                null,//no gun mesh replacement. use same gun mesh
-                "meshHenryAlt");
-
-            //masterySkin has a new set of RendererInfos (based on default rendererinfos)
-            //you can simply access the RendererInfos defaultMaterials and set them to the new materials for your skin.
-            masterySkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matHenryAlt");
-            masterySkin.rendererInfos[1].defaultMaterial = Modules.Materials.CreateHopooMaterial("matHenryAlt");
-            masterySkin.rendererInfos[2].defaultMaterial = Modules.Materials.CreateHopooMaterial("matHenryAlt");
-
-            //here's a barebones example of using gameobjectactivations that could probably be streamlined or rewritten entirely, truthfully, but it works
-            masterySkin.gameObjectActivations = new SkinDef.GameObjectActivation[]
-            {
-                new SkinDef.GameObjectActivation
-                {
-                    gameObject = childLocator.FindChildGameObject("GunModel"),
-                    shouldActivate = false,
-                }
-            };
-            //simply find an object on your child locator you want to activate/deactivate and set if you want to activate/deacitvate it with this skin
-
-            skins.Add(masterySkin);
-            */
             #endregion
 
             skinController.skins = skins.ToArray();

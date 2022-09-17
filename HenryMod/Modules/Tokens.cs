@@ -75,9 +75,9 @@ namespace CamperMod.Modules
             #endregion
 
             #region Keywords
-            //LanguageAPI.Add("KEYWORD_INFURIATING", "<style=cKeywordName>Infuriating</style><style=cSub>Deal <style=cIsDamage>extra damage</style> to enemies facing you.</style>");
-            //LanguageAPI.Add("KEYWORD_CHANNELLING", "<style=cKeywordName>Channelling</style><style=cSub>Controls are <style=cDeath>disabled</style> for the duration of the ability.</style>");
-            //LanguageAPI.Add("KEYWORD_FRAGILE", "<style=cKeywordName>Fragile</style><style=cSub><style=cIsDamage>Taking damage</style> cancels the ability.</style>");
+            LanguageAPI.Add("KEYWORD_INFURIATING", "<style=cKeywordName>Infuriating</style><style=cSub>Deal <style=cIsDamage>extra damage</style> to enemies facing you.</style>");
+            LanguageAPI.Add("KEYWORD_CHANNELLING", "<style=cKeywordName>Channelling</style><style=cSub>Controls are <style=cDeath>disabled</style> for the duration of the ability.</style>");
+            LanguageAPI.Add("KEYWORD_FRAGILE", "<style=cKeywordName>Fragile</style><style=cSub><style=cIsDamage>Taking damage</style> cancels the ability.</style>");
             #endregion
             #endregion
         }

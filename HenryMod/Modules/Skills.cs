@@ -194,6 +194,7 @@ namespace CamperMod.Modules
         public SkillDefInfo(string skillNameToken,
                             string skillDescriptionToken,
                             Sprite skillIcon,
+                            string[] keywords,
 
                             SerializableEntityStateType activationState,
                             string activationStateMachineName = "Weapon",
@@ -216,8 +217,7 @@ namespace CamperMod.Modules
 
             this.cancelSprintingOnActivation = !agile;
 
-            if (agile) this.keywordTokens = new string[] { "KEYWORD_AGILE" };
-
+            this.keywordTokens = keywords;
         }
         #endregion construction complete
     }
