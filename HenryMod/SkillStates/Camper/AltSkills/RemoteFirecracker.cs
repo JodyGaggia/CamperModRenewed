@@ -6,7 +6,7 @@
         {
             this.isRemote = true;
 
-            this.baseCharges = 3f;
+            this.baseCharges = 1f;
             this.radius = 15f;
             this.procCoefficient = 0.4f;
             this.playerDamageCoefficient = 0.15f;

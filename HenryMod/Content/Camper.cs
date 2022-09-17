@@ -138,9 +138,9 @@ namespace CamperMod.Modules.Survivors
 
             SkillDef remoteFirecrackerDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "SECONDARY_FIRECRACKER_NAME",
-                skillNameToken = prefix + "SECONDARY_FIRECRACKER_NAME",
-                skillDescriptionToken = prefix + "SECONDARY_FIRECRACKER_DESCRIPTION",
+                skillName = prefix + "SECONDARY_REMOTEFIRECRACKER_NAME",
+                skillNameToken = prefix + "SECONDARY_REMOTEFIRECRACKER_NAME",
+                skillDescriptionToken = prefix + "SECONDARY_REMOTEFIRECRACKER_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFirecracker"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.RemoteFirecracker)),
                 activationStateMachineName = "Slide",
@@ -319,12 +319,23 @@ namespace CamperMod.Modules.Survivors
                 defaultRendererinfos,
                 model);
 
-            //these are your Mesh Replacements. The order here is based on your CustomRendererInfos from earlier
-            //pass in meshes as they are named in your assetbundle
             defaultSkin.meshReplacements = Modules.Skins.getMeshReplacements(defaultRendererinfos, "meshClaudetteDefault");
+            defaultSkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matClaudetteDefault");
 
             //add new skindef to our list of skindefs. this is what we'll be passing to the SkinController
             skins.Add(defaultSkin);
+            #endregion
+
+            #region NeaSkin
+            SkinDef neaSkin = Modules.Skins.CreateSkinDef(CAMPER_PREFIX + "NEA_SKIN_NAME",
+                Assets.mainAssetBundle.LoadAsset<Sprite>("texMasteryAchievement"),
+                defaultRendererinfos,
+                model);
+
+            neaSkin.meshReplacements = Modules.Skins.getMeshReplacements(defaultRendererinfos, "meshNeaDefault");
+            neaSkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matNeaDefault");
+
+            skins.Add(neaSkin);
             #endregion
 
             skinController.skins = skins.ToArray();

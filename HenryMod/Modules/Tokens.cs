@@ -47,6 +47,9 @@ namespace CamperMod.Modules
             #region Secondary
             LanguageAPI.Add(prefix + "SECONDARY_FIRECRACKER_NAME", "Firecracker");
             LanguageAPI.Add(prefix + "SECONDARY_FIRECRACKER_DESCRIPTION", Helpers.agilePrefix + $"<style=cIsDamage>Shocking.</style> Drop a firecracker which explodes and deals <style=cIsDamage>{100f * StaticValues.firecrackerDamageCoefficient}% damage</style> to enemies.");
+
+            LanguageAPI.Add(prefix + "SECONDARY_REMOTEFIRECRACKER_NAME", "Remote Firecracker");
+            LanguageAPI.Add(prefix + "SECONDARY_REMOTEFIRECRACKER_DESCRIPTION", Helpers.agilePrefix + $"<style=cIsDamage>Shocking.</style> Drop a firecracker which explodes upon reactivation, dealing <style=cIsDamage>{100f * StaticValues.firecrackerDamageCoefficient}% damage</style> to enemies.");
             #endregion
 
             #region Utility
