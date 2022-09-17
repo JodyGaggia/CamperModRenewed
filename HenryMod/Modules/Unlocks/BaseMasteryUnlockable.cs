@@ -1,6 +1,6 @@
 ﻿using RoR2;
 
-namespace HenryMod.Modules
+namespace CamperMod.Modules
 {
     public abstract class BaseMasteryUnlockable : GenericModdedUnlockable
     {

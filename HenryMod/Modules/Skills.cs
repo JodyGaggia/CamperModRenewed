@@ -3,10 +3,10 @@ using RoR2;
 using RoR2.Skills;
 using System;
 using System.Collections.Generic;
-using HenryMod;
+using CamperMod;
 using UnityEngine;
 
-namespace HenryMod.Modules
+namespace CamperMod.Modules
 {
 
     internal static class Skills
@@ -28,6 +28,11 @@ namespace HenryMod.Modules
             skillLocator.secondary = CreateGenericSkillWithSkillFamily(targetPrefab, "Secondary");
             skillLocator.utility = CreateGenericSkillWithSkillFamily(targetPrefab, "Utility");
             skillLocator.special = CreateGenericSkillWithSkillFamily(targetPrefab, "Special");
+
+            skillLocator.passiveSkill.enabled = true;
+            skillLocator.passiveSkill.skillNameToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_PASSIVE_PLUNDERERS_NAME";
+            skillLocator.passiveSkill.skillDescriptionToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_PASSIVE_PLUNDERERS_DESCRIPTION";
+            skillLocator.passiveSkill.icon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texPlunderers");
         }
 
         public static GenericSkill CreateGenericSkillWithSkillFamily(GameObject targetPrefab, string familyName, bool hidden = false)
@@ -42,7 +47,7 @@ namespace HenryMod.Modules
 
             skill._skillFamily = newFamily;
 
-            HenryMod.Modules.Content.AddSkillFamily(newFamily);
+            CamperMod.Modules.Content.AddSkillFamily(newFamily);
             return skill;
         }
         #endregion
@@ -140,7 +145,7 @@ namespace HenryMod.Modules
 
             skillDef.keywordTokens = skillDefInfo.keywordTokens;
 
-            HenryMod.Modules.Content.AddSkillDef(skillDef);
+            CamperMod.Modules.Content.AddSkillDef(skillDef);
 
 
             return skillDef;

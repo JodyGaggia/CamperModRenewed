@@ -8,28 +8,28 @@ using System.Collections.Generic;
 using RoR2.UI;
 using System;
 
-namespace HenryMod.Modules
+namespace CamperMod.Modules
 {
     internal static class Assets
     {
-        #region henry's stuff
+        #region camper's stuff
         // particle effects
-        internal static GameObject swordSwingEffect;
-        internal static GameObject swordHitImpactEffect;
-
-        internal static GameObject bombExplosionEffect;
-
-        // networked hit sounds
-        internal static NetworkSoundEventDef swordHitSoundEvent;
+        internal static GameObject firecrackerMesh;
+        internal static GameObject deathEffect;
+        internal static GameObject deadHardHit;
+        internal static GameObject firecrackerExplosion;
+        internal static GameObject goodEffect;
+        internal static GameObject greatEffect;
+        internal static GameObject spinEffect;
         #endregion
 
         // the assetbundle to load assets from
         internal static AssetBundle mainAssetBundle;
 
         // CHANGE THIS
-        private const string assetbundleName = "myassetbundle";
+        private const string assetbundleName = "camperassets";
         //change this to your project's name if/when you've renamed it
-        private const string csProjName = "HenryMod";
+        private const string csProjName = "CamperMod";
         
         internal static void Initialize()
         {
@@ -66,7 +66,7 @@ namespace HenryMod.Modules
         internal static void LoadSoundbank()
         {                                                                
             //soundbank currently broke, but this is how you should load yours
-            using (Stream manifestResourceStream2 = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{csProjName}.HenryBank.bnk"))
+            using (Stream manifestResourceStream2 = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{csProjName}.camperbank.bnk"))
             {
                 byte[] array = new byte[manifestResourceStream2.Length];
                 manifestResourceStream2.Read(array, 0, array.Length);
@@ -82,31 +82,13 @@ namespace HenryMod.Modules
                 return;
             }
 
-            // feel free to delete everything in here and load in your own assets instead
-            // it should work fine even if left as is- even if the assets aren't in the bundle
-
-            swordHitSoundEvent = CreateNetworkSoundEventDef("HenrySwordHit");
-
-            bombExplosionEffect = LoadEffect("BombExplosionEffect", "HenryBombExplosion");
-
-            if (bombExplosionEffect)
-            {
-                ShakeEmitter shakeEmitter = bombExplosionEffect.AddComponent<ShakeEmitter>();
-                shakeEmitter.amplitudeTimeDecay = true;
-                shakeEmitter.duration = 0.5f;
-                shakeEmitter.radius = 200f;
-                shakeEmitter.scaleShakeRadiusWithLocalScale = false;
-
-                shakeEmitter.wave = new Wave
-                {
-                    amplitude = 1f,
-                    frequency = 40f,
-                    cycleOffset = 0f
-                };
-            }
-
-            swordSwingEffect = Assets.LoadEffect("HenrySwordSwingEffect", true);
-            swordHitImpactEffect = Assets.LoadEffect("ImpactHenrySlash");
+            firecrackerMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlFirecracker");
+            deathEffect = Assets.LoadEffect("CamperDeathEffect");
+            deadHardHit = Assets.LoadEffect("DeadHardImpactEffect");
+            firecrackerExplosion = Assets.LoadEffect("FirecrackerExplosionEffect", true);
+            spinEffect = Assets.LoadEffect("SpinEffect", true);
+            greatEffect = Assets.LoadEffect("GreatEffect", true);
+            goodEffect = Assets.LoadEffect("GoodEffect", true);
         }
 
         private static GameObject CreateTracer(string originalTracerName, string newTracerName)

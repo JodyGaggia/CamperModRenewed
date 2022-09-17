@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace HenryMod.Modules
+namespace CamperMod.Modules
 {
     public static class Buffs
     {
-        // armor buff gained during roll
-        internal static BuffDef armorBuff;
-
+        internal static BuffDef spinBuff;
         internal static void RegisterBuffs()
         {
-            armorBuff = AddNewBuff("HenryArmorBuff", RoR2.LegacyResourcesAPI.Load<Sprite>("Textures/BuffIcons/texBuffGenericShield"), Color.white, false, false);
+            spinBuff = AddNewBuff("CamperSpinBuff", RoR2.LegacyResourcesAPI.Load<Sprite>("texSpinBuff"), Color.white, false, false);
         }
 
         // simple helper method
