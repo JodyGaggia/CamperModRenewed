@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!95 &5754955006553390354
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3350665408857913761}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 805d8c8554cf7684f9dd3ca4d9717d6f, type: 3}
+  m_Controller: {fileID: 9100000, guid: 4397b394b0996d44ba60f0f7769a33d1, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1001 &477533995257774941
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.2216201
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.012706816
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.8232344
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2563865816044478534, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2945212098842032892, guid: 6764248960ba5c84d8989e286c0ba53f,
+        type: 3}
+      propertyPath: m_Name
+      value: DisplayCamper
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 372284004224818869, guid: 6764248960ba5c84d8989e286c0ba53f, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 6764248960ba5c84d8989e286c0ba53f, type: 3}
+--- !u!1 &3350665408857913761 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2945212098842032892, guid: 6764248960ba5c84d8989e286c0ba53f,
+    type: 3}
+  m_PrefabInstance: {fileID: 477533995257774941}
+  m_PrefabAsset: {fileID: 0}
