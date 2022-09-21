@@ -1,18 +1,31 @@
-﻿namespace CamperMod.SkillStates
+﻿using UnityEngine.Networking;
+using RoR2;
+
+namespace CamperMod.SkillStates
 {
     public class SelfCare : BaseHealState
     {
         public override void OnEnter()
         {
-            this.isFragile = false;
-            this.hptCoefficient = 0.0009f;
+            if (base.characterBody)
+            {
+                if (NetworkServer.active) base.characterBody.AddTimedBuff(RoR2Content.Buffs.ArmorBoost, 1f);
+            }
+
+            this.hpsCoefficient = Modules.StaticValues.selfCareHPSCoefficient;
 
             base.OnEnter();
         }
 
-        public override void OnExit()
+        public override void FixedUpdate()
         {
-            base.OnExit();
+            base.FixedUpdate();
+
+            if (base.isAuthority && base.inputBank.skill4.down && this.fixedAge > Modules.StaticValues.keyLiftGrace)
+            {
+                base.outer.SetNextStateToMain();
+                return;
+            }
         }
     }
 }

@@ -133,7 +133,6 @@ namespace CamperMod.Modules
 
         public static void AddNetworkSoundEventDef(NetworkSoundEventDef networkSoundEventDef)
         {
-
             ContentPacks.networkSoundEventDefs.Add(networkSoundEventDef);
         }
     }

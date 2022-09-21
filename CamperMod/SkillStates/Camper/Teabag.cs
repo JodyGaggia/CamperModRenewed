@@ -7,15 +7,14 @@ namespace CamperMod.SkillStates
 {
     public class Teabag : BaseSkillState
     {
-        public static float baseDamageCoefficient = Modules.StaticValues.teabagDamageCoefficient;
-        public static float extraDamageCoefficient = Modules.StaticValues.teabagRangeDamageCoefficient;
-        public static float facingDamageCoefficient = Modules.StaticValues.teabagFacingDamageCoefficient;
+        private static float baseDamageCoefficient = Modules.StaticValues.teabagDamageCoefficient;
+        private static float extraDamageCoefficient = Modules.StaticValues.teabagRangeDamageCoefficient;
+        private static float facingDamageCoefficient = Modules.StaticValues.teabagFacingDamageCoefficient;
 
-        public static float procCoefficient = 0.5f;
-        public static float baseDuration = 0.1f;
-        public static float force = 10f;
-        public static float range = 125f;
-        public static float maxFireAngle = 45f;
+        private static float procCoefficient = 0.5f;
+        private static float baseDuration = 0.1f;
+        private static float force = 10f;
+        private static float range = 125f;
 
         private Animator animator;
         private float damageCoefficient;
@@ -34,11 +33,11 @@ namespace CamperMod.SkillStates
             this.animator.SetBool("attacking", true);
 
             // Initiate aim timer
-            base.characterBody.SetAimTimer(2f);
+            base.characterBody.SetAimTimer(1f);
 
             // Play sound and animation
             Util.PlaySound(FirePistol2.firePistolSoundString, base.gameObject);
-            base.PlayAnimation("FullBody, Override", "Crouch", "Crouch.playbackRate", 0.1f);
+            base.PlayAnimation("FullBody, Override", "Crouch", "Crouch.playbackRate", this.duration);
         }
 
         public override void OnExit()

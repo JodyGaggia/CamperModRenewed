@@ -9,7 +9,7 @@ namespace CamperMod.SkillStates
 {
     public class DeadHard : BaseSkillState
     {
-        public static string hitboxName = "Bash";
+        public static string hitboxName = "DeadHardHitbox";
         public static float basePushForce = 285f;
         public static float maxPushForce = 8000f;
         public static float baseDuration = 0.5f;
@@ -67,19 +67,22 @@ namespace CamperMod.SkillStates
                 hitBoxGroup = Array.Find<HitBoxGroup>(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup element) => element.groupName == DeadHard.hitboxName);
             }
 
-            this.attack = new OverlapAttack();
-            this.attack.damageType = DamageType.Stun1s;
-            this.attack.attacker = base.gameObject;
-            this.attack.inflictor = base.gameObject;
-            this.attack.teamIndex = base.GetTeam();
-            this.attack.damage = DeadHard.damageCoefficient * this.damageStat;
-            this.attack.procCoefficient = 1f;
-            this.attack.hitEffectPrefab = null;
-            this.attack.forceVector = DeadHard.force;
-            this.attack.pushAwayForce = this.pushForce;
-            this.attack.hitBoxGroup = hitBoxGroup;
-            this.attack.isCrit = base.RollCrit();
-            this.attack.impactSound = this.impactSound;
+            if (base.isAuthority)
+            {
+                this.attack = new OverlapAttack();
+                this.attack.damageType = DamageType.Stun1s;
+                this.attack.attacker = base.gameObject;
+                this.attack.inflictor = base.gameObject;
+                this.attack.teamIndex = base.GetTeam();
+                this.attack.damage = DeadHard.damageCoefficient * this.damageStat;
+                this.attack.procCoefficient = 1f;
+                this.attack.hitEffectPrefab = null;
+                this.attack.forceVector = DeadHard.force;
+                this.attack.pushAwayForce = this.pushForce;
+                this.attack.hitBoxGroup = hitBoxGroup;
+                this.attack.isCrit = base.RollCrit();
+                this.attack.impactSound = this.impactSound;
+            }
         }
 
         public override void FixedUpdate()
@@ -129,14 +132,13 @@ namespace CamperMod.SkillStates
                     base.characterMotor.velocity = Vector3.zero;
                     this.animator.SetFloat("DeadHard.playbackRate", 0f);
                 }
-            }
 
-            if (base.isAuthority && base.fixedAge >= this.duration)
-            {
-                this.outer.SetNextStateToMain();
-                return;
+                if (base.fixedAge >= this.duration)
+                {
+                    this.outer.SetNextStateToMain();
+                    return;
+                }
             }
-
         }
 
         public override void OnExit()

@@ -25,14 +25,11 @@ namespace CamperMod
 
     public class CamperPlugin : BaseUnityPlugin
     {
-        // if you don't change these you're giving permission to deprecate the mod-
-        //  please change the names to your own stuff, thanks
-        //   this shouldn't even have to be said
         public const string MODUID = "com.sladoinki.CamperMod";
         public const string MODNAME = "CamperMod";
         public const string MODVERSION = "1.0.0";
 
-        // a prefix for name tokens to prevent conflicts- please capitalize all name tokens for convention
+        // a prefix for name tokens to prevent conflicts
         public const string DEVELOPER_PREFIX = "SLAD";
 
         public static CamperPlugin instance;
@@ -106,13 +103,9 @@ namespace CamperMod
         {
             orig(self);
 
-            bool flag = self;
-
-            if (flag)
+            if (self)
             {
-                bool flag2 = self.HasBuff(Modules.Buffs.spinBuff);
-
-                if (flag2)
+                if (self.HasBuff(Modules.Buffs.moonwalkBuff))
                 {
                     self.moveSpeed += self.moveSpeed / 4f;
                     self.attackSpeed += 0.2f;

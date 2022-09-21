@@ -1,5 +1,6 @@
 ﻿using BepInEx.Configuration;
 using CamperMod.Modules.Characters;
+using CamperMod.SkillStates.Camper.AltSkills.Flashbang;
 using RoR2;
 using RoR2.Skills;
 using System;
@@ -26,6 +27,7 @@ namespace CamperMod.Modules.Survivors
             bodyColor = Color.white,
 
             crosshair = Modules.Assets.LoadCrosshair("Standard"),
+            //podPrefab = Modules.Assets.lockerDropPod,
             podPrefab = RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/SurvivorPod"),
 
             maxHealth = 80f,
@@ -39,8 +41,8 @@ namespace CamperMod.Modules.Survivors
         {
             new CustomRendererInfo
             {
-                childName = "CamperModel",
-                material = Materials.CreateHopooMaterial("matClaudetteDefault"),
+                childName = "Model",
+                material = Modules.Materials.CreateHopooMaterial("matClaudette"),
             },
         };
 
@@ -62,7 +64,7 @@ namespace CamperMod.Modules.Survivors
 
         public override void InitializeUnlockables()
         {
-            //masterySkinUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.MasteryAchievement>();
+            masterySkinUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.MasteryAchievement>();
         }
 
         public override void InitializeHitboxes()
@@ -71,13 +73,10 @@ namespace CamperMod.Modules.Survivors
             GameObject model = childLocator.gameObject;
 
             Transform hitboxTransform = childLocator.FindChild("DeadHardHitbox");
-            Modules.Prefabs.SetupHitbox(model, hitboxTransform, "Bash");
+            Modules.Prefabs.SetupHitbox(model, hitboxTransform, "DeadHardHitbox");
 
-            //Transform hitboxTransform2 = childLocator.FindChild("SpinHitbox");
-            //Modules.Prefabs.SetupHitbox(model, hitboxTransform2, "SpinBox");
-
-            //Transform hitboxTransform3 = childLocator.FindChild("SlapHitbox");
-            //Modules.Prefabs.SetupHitbox(model, hitboxTransform3, "Slap");
+            Transform hitboxTransform2 = childLocator.FindChild("SpinHitbox");
+            Modules.Prefabs.SetupHitbox(model, hitboxTransform2, "SpinHitbox");
         }
 
         public override void InitializeSkills()
@@ -96,16 +95,6 @@ namespace CamperMod.Modules.Survivors
 
 
             Modules.Skills.AddPrimarySkills(bodyPrefab, primarySkillDef);
-            /*
-            SkillDef primarySkillDef2 = Modules.Skills.CreateSkillDef(new SkillDefInfo(prefix + "PRIMARY_SLAP_NAME",
-                                                                                      prefix + "PRIMARY_SLAP_DESCRIPTION",
-                                                                                      Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texTeabag"),
-                                                                                      new string[] { "KEYWORD_AGILE"},
-                                                                                      new EntityStates.SerializableEntityStateType(typeof(SkillStates.Slap)),
-                                                                                      "Weapon",
-                                                                                      true));
-
-            Modules.Skills.AddPrimarySkills(bodyPrefab, primarySkillDef2);*/
             #endregion
 
             #region Secondary
@@ -115,7 +104,7 @@ namespace CamperMod.Modules.Survivors
                 skillNameToken = prefix + "SECONDARY_FIRECRACKER_NAME",
                 skillDescriptionToken = prefix + "SECONDARY_FIRECRACKER_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFirecracker"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.DropFirecracker)),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Firecracker)),
                 activationStateMachineName = "Slide",
                 baseMaxStock = 2,
                 baseRechargeInterval = 6f,
@@ -131,21 +120,21 @@ namespace CamperMod.Modules.Survivors
                 rechargeStock = 1,
                 requiredStock = 1,
                 stockToConsume = 1,
-                keywordTokens = new string[] { "KEYWORD_AGILE", "KEYWORD_SHOCKING" }
+                keywordTokens = new string[] { "KEYWORD_AGILE" }
             });
 
             Modules.Skills.AddSecondarySkills(bodyPrefab, firecrackerDef);
-            /*
-            SkillDef remoteFirecrackerDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
+            
+            SkillDef winterFirecrackerDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
-                skillName = prefix + "SECONDARY_REMOTEFIRECRACKER_NAME",
-                skillNameToken = prefix + "SECONDARY_REMOTEFIRECRACKER_NAME",
-                skillDescriptionToken = prefix + "SECONDARY_REMOTEFIRECRACKER_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFirecracker"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.RemoteFirecracker)),
+                skillName = prefix + "SECONDARY_WINTERFIRECRACKER_NAME",
+                skillNameToken = prefix + "SECONDARY_WINTERFIRECRACKER_NAME",
+                skillDescriptionToken = prefix + "SECONDARY_WINTERFIRECRACKER_DESCRIPTION",
+                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texWinterFirecracker"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.WinterFirecracker)),
                 activationStateMachineName = "Slide",
                 baseMaxStock = 1,
-                baseRechargeInterval = 14f,
+                baseRechargeInterval = 9f,
                 beginSkillCooldownOnSkillEnd = true,
                 canceledFromSprinting = false,
                 forceSprintDuringState = false,
@@ -158,10 +147,37 @@ namespace CamperMod.Modules.Survivors
                 rechargeStock = 1,
                 requiredStock = 1,
                 stockToConsume = 1,
-                keywordTokens = new string[] { "KEYWORD_SHOCKING" }
+                keywordTokens = new string[] { "KEYWORD_AGILE", "KEYWORD_FREEZING" }
             });
 
-            Modules.Skills.AddSecondarySkills(bodyPrefab, remoteFirecrackerDef);*/
+            Modules.Skills.AddSecondarySkills(bodyPrefab, winterFirecrackerDef);
+
+            SkillDef flashbangFirecrackerDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = prefix + "SECONDARY_FLASHBANGFIRECRACKER_NAME",
+                skillNameToken = prefix + "SECONDARY_FLASHBANGFIRECRACKER_NAME",
+                skillDescriptionToken = prefix + "SECONDARY_FLASHBANGFIRECRACKER_DESCRIPTION",
+                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFlashbang"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(FlashbangFirecracker)),
+                activationStateMachineName = "Slide",
+                baseMaxStock = 1,
+                baseRechargeInterval = 8f,
+                beginSkillCooldownOnSkillEnd = true,
+                canceledFromSprinting = false,
+                forceSprintDuringState = false,
+                fullRestockOnAssign = true,
+                interruptPriority = EntityStates.InterruptPriority.Skill,
+                resetCooldownTimerOnUse = false,
+                isCombatSkill = true,
+                mustKeyPress = false,
+                cancelSprintingOnActivation = false,
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1,
+                keywordTokens = new string[] { "KEYWORD_AGILE", "KEYWORD_STUNNING" }
+            });
+
+            Modules.Skills.AddSecondarySkills(bodyPrefab, flashbangFirecrackerDef);
             #endregion
 
             #region Utility
@@ -181,7 +197,7 @@ namespace CamperMod.Modules.Survivors
                 fullRestockOnAssign = true,
                 interruptPriority = EntityStates.InterruptPriority.Skill,
                 resetCooldownTimerOnUse = false,
-                isCombatSkill = false,
+                isCombatSkill = true,
                 mustKeyPress = false,
                 cancelSprintingOnActivation = false,
                 rechargeStock = 1,
@@ -191,7 +207,7 @@ namespace CamperMod.Modules.Survivors
 
             Modules.Skills.AddUtilitySkills(bodyPrefab, deadHardDef);
 
-            /*
+            
             SkillDef sprintBurstDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
                 skillName = prefix + "UTILITY_SPRINTBURST_NAME",
@@ -243,7 +259,7 @@ namespace CamperMod.Modules.Survivors
             });
 
             Modules.Skills.AddUtilitySkills(bodyPrefab, balancedLandingDef);
-            */
+            
             #endregion
 
             #region Special
@@ -256,7 +272,7 @@ namespace CamperMod.Modules.Survivors
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.SelfCare)),
                 activationStateMachineName = "Body",
                 baseMaxStock = 1,
-                baseRechargeInterval = 4f,
+                baseRechargeInterval = 10f,
                 beginSkillCooldownOnSkillEnd = true,
                 canceledFromSprinting = true,
                 forceSprintDuringState = false,
@@ -265,7 +281,7 @@ namespace CamperMod.Modules.Survivors
                 resetCooldownTimerOnUse = false,
                 isCombatSkill = false,
                 mustKeyPress = false,
-                cancelSprintingOnActivation = false,
+                cancelSprintingOnActivation = true,
                 rechargeStock = 1,
                 requiredStock = 1,
                 stockToConsume = 1,
@@ -274,7 +290,7 @@ namespace CamperMod.Modules.Survivors
 
             Modules.Skills.AddSpecialSkills(bodyPrefab, selfCareDef);
 
-            /*
+            
             SkillDef medkitDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
                 skillName = prefix + "SPECIAL_MEDKIT_NAME",
@@ -284,7 +300,7 @@ namespace CamperMod.Modules.Survivors
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Medkit)),
                 activationStateMachineName = "Body",
                 baseMaxStock = 1,
-                baseRechargeInterval = 25f,
+                baseRechargeInterval = 15f,
                 beginSkillCooldownOnSkillEnd = true,
                 canceledFromSprinting = true,
                 forceSprintDuringState = false,
@@ -293,14 +309,14 @@ namespace CamperMod.Modules.Survivors
                 resetCooldownTimerOnUse = false,
                 isCombatSkill = false,
                 mustKeyPress = false,
-                cancelSprintingOnActivation = false,
+                cancelSprintingOnActivation = true,
                 rechargeStock = 1,
                 requiredStock = 1,
                 stockToConsume = 1,
                 keywordTokens = new string[] { "KEYWORD_FRAGILE", "KEYWORD_CHANNELLING" }
             });
 
-            Modules.Skills.AddSpecialSkills(bodyPrefab, medkitDef);*/
+            Modules.Skills.AddSpecialSkills(bodyPrefab, medkitDef);
             #endregion
         }
 
@@ -322,22 +338,55 @@ namespace CamperMod.Modules.Survivors
                 defaultRendererinfos,
                 model);
 
-            defaultSkin.meshReplacements = Modules.Skins.getMeshReplacements(defaultRendererinfos, "meshClaudetteDefault");
-            
+            defaultSkin.meshReplacements = Modules.Skins.getMeshReplacements(defaultRendererinfos, "meshClaudette");
 
             skins.Add(defaultSkin);
             #endregion
 
             #region NeaSkin
-            /*SkinDef neaSkin = Modules.Skins.CreateSkinDef(CAMPER_PREFIX + "NEA_SKIN_NAME",
-                Assets.mainAssetBundle.LoadAsset<Sprite>("texMasteryAchievement"),
-                defaultRendererinfos,
+            CharacterModel.RendererInfo[] neaRendererInfos = new CharacterModel.RendererInfo[defaultRendererinfos.Length];
+            defaultRendererinfos.CopyTo(neaRendererInfos, 0);
+
+            SkinDef neaSkin = Modules.Skins.CreateSkinDef(CAMPER_PREFIX + "NEA_SKIN_NAME",
+                Assets.mainAssetBundle.LoadAsset<Sprite>("texNeaSkin"),
+                neaRendererInfos,
                 model);
 
-            neaSkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matNeaDefault");
-            neaSkin.meshReplacements = Modules.Skins.getMeshReplacements(defaultRendererinfos, "meshNeaDefault");
+            neaSkin.meshReplacements = Modules.Skins.getMeshReplacements(neaRendererInfos, "meshNea");
+            neaSkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matNea");
 
-            skins.Add(neaSkin);*/
+            skins.Add(neaSkin);
+            #endregion
+
+            #region ClaudettePrestigeSkin
+            CharacterModel.RendererInfo[] claudettePRendererInfos = new CharacterModel.RendererInfo[defaultRendererinfos.Length];
+            defaultRendererinfos.CopyTo(claudettePRendererInfos, 0);
+
+            SkinDef claudettePSkin = Modules.Skins.CreateSkinDef(CAMPER_PREFIX + "CLAUDETTEPRESTIGE_SKIN_NAME",
+                Assets.mainAssetBundle.LoadAsset<Sprite>("texClaudettePrestigeSkin"),
+                claudettePRendererInfos,
+                model,
+                masterySkinUnlockableDef);
+
+            claudettePSkin.meshReplacements = Modules.Skins.getMeshReplacements(claudettePRendererInfos, "meshClaudette");
+            claudettePSkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matClaudettePrestige");
+
+            skins.Add(claudettePSkin);
+            #endregion
+
+            #region NeaPrestigeSkin
+            CharacterModel.RendererInfo[] neaPRendererInfos = new CharacterModel.RendererInfo[defaultRendererinfos.Length];
+            defaultRendererinfos.CopyTo(neaPRendererInfos, 0);
+
+            SkinDef neaPSkin = Modules.Skins.CreateSkinDef(CAMPER_PREFIX + "NEAPRESTIGE_SKIN_NAME",
+                Assets.mainAssetBundle.LoadAsset<Sprite>("texNeaPrestigeSkin"),
+                neaPRendererInfos,
+                model);
+
+            neaPSkin.meshReplacements = Modules.Skins.getMeshReplacements(neaPRendererInfos, "meshNea");
+            neaPSkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matNeaPrestige");
+
+            skins.Add(neaPSkin);
             #endregion
 
             skinController.skins = skins.ToArray();

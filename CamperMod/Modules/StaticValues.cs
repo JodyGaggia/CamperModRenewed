@@ -9,13 +9,15 @@
         internal const float teabagRangeDamageCoefficient = 0.1f;
         internal const float teabagFacingDamageCoefficient = 0.35f;
 
-        internal const float palletSmashDamageCoefficient = 1.5f;
-
         // Secondary
-        internal const float firecrackerDamageCoefficient = 15f;
+        internal const float firecrackerDamageCoefficient = 12f;
+        internal const float winterFirecrackerDamageCoefficient = 15f;
+        internal const float flashbangFirecrackerDamageCoefficient = 10f;
 
         // Special
-        internal const float medkitHealCoefficient = 0.5f;
+        internal const float selfCareHPSCoefficient = 0.1f; 
+        internal const float medkitHPSCoefficient = 0.25f;
+        internal const float medkitDuration = 3f;
 
         // Other
         internal const float turnSpeed = 260f;

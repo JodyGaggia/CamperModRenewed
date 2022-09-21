@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using R2API;
+using RoR2;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +7,10 @@ namespace CamperMod.Modules
 {
     public static class Buffs
     {
-        internal static BuffDef spinBuff;
+        internal static BuffDef moonwalkBuff;
         internal static void RegisterBuffs()
         {
-            spinBuff = AddNewBuff("CamperSpinBuff", RoR2.LegacyResourcesAPI.Load<Sprite>("texSpinBuff"), Color.white, false, false);
+            moonwalkBuff = AddNewBuff("CamperMoonwalkBuff", Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texMoonwalkBuff"), Color.white, true, false);
         }
 
         // simple helper method

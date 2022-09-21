@@ -1,37 +1,39 @@
 ﻿using EntityStates;
 using RoR2;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace CamperMod.SkillStates
 {
     public class BaseFirecrackerState : BaseSkillState
     {
-        public static float maxDropDistance = 3f;
-        public static float maxDropDistanceOffset = 2f;
-        public static float distanceAboveGround = 0.5f;
+        private static float distanceAboveGround = 0.5f;
+        private static float maxDropDistance = 3f;
+        private static float distanceBelowPlayerWhenAirborne = 2f;
 
-        protected float baseCharges = 1f;
-        protected bool isRemote = false;
+        protected DamageType damageType = RoR2.DamageType.Generic;
+        protected string dropSound = "FirecrackerDrop";
+        protected string explodeSound = "FirecrackerExplode";
+        protected GameObject explosionEffect = Modules.Assets.firecrackerExplosion;
+        protected GameObject firecrackerPrefab = Modules.Assets.firecrackerMesh;
 
         protected float enemyDamageCoefficient = 10f;
         protected float playerDamageCoefficient = 0.2f;
-        protected float baseDuration = 1f;
-        protected float baseChargeTime = 0.5f;
-        protected float radius = 20f;
         protected float procCoefficient = 1f;
 
+        protected float baseDuration = 0.8f;
+        protected float blastRadius = 20f;
+        
         protected float airForce = 10f;
         protected float groundForce = 2f;
 
+        protected RoR2.BuffDef[] buffsToApply;
+        protected float buffsDuration = 3f;
+
         private Vector3 dropPos;
-        private List<GameObject> firecrackers = new List<GameObject>();
-        private float stopwatch;
-        private float damageToPlayer;
-        private float chargeTime;
-        private float duration;
-        private bool hasThrown;
-        private bool hasExploded;
+        protected GameObject firecracker;
+        protected float damageToPlayer;
+        protected float duration;
 
         public override void OnEnter()
         {
@@ -39,98 +41,83 @@ namespace CamperMod.SkillStates
 
             this.duration = this.baseDuration / this.attackSpeedStat;
             this.damageToPlayer = base.healthComponent.fullHealth * this.playerDamageCoefficient;
-            this.chargeTime = this.baseChargeTime / this.attackSpeedStat;
             this.dropPos = GetDropPos();
 
-            //GameObject firecracker = GameObject.Instantiate(Modules.Assets.firecrackerMesh, dropPos, this.transform.rotation * Quaternion.Euler(90f, 0f, 0f));
-            //firecrackers.Add(firecracker);
+            if(this.dropPos == Vector3.zero) this.outer.SetNextStateToMain();
 
-            this.baseCharges -= 1f;
+            ClientScene.RegisterPrefab(firecracker);
+
+            // Spawn a firecracker GameObject
+            this.firecracker = GameObject.Instantiate(firecrackerPrefab, dropPos, this.transform.rotation * Quaternion.Euler(90f, 0f, 0f));
+            AkSoundEngine.PostEvent(dropSound, firecracker);
 
             base.PlayAnimation("Gesture, Override", "DropFirecracker", "DropFirecracker.playbackRate", this.duration);
-
-            if (!isRemote) Util.PlaySound("FirecrackerIgnite", base.gameObject);
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
 
-            stopwatch += Time.fixedDeltaTime;
-
-            if (isRemote)
+            if(this.fixedAge >= this.duration)
             {
-                if (base.isAuthority && base.inputBank.skill2.down && this.baseCharges > 0 && stopwatch > Modules.StaticValues.keyLiftGrace)
-                {
-                    base.PlayAnimation("Gesture, Override", "DropFirecracker", "DropFirecracker.playbackRate", this.duration);
-                    this.dropPos = GetDropPos();
-                    //GameObject firecrackerInstance = GameObject.Instantiate(Modules.Assets.firecrackerMesh, this.dropPos, this.transform.rotation * Quaternion.Euler(90f, 0f, 0f));
-                    //this.firecrackers.Add(firecrackerInstance);
-                    stopwatch = 0f;
-                    this.baseCharges -= 1f;
-                }
-
-                if (base.isAuthority && this.baseCharges == 0 && stopwatch > Modules.StaticValues.keyLiftGrace && base.inputBank.skill2.down)
-                {
-                    ExplodeFirecrackers();
-                    this.outer.SetNextStateToMain();
-                    return;
-                }
-            }
-            else
-            {
-                this.chargeTime -= Time.fixedDeltaTime;
-
-                if (this.chargeTime <= 0 && !hasThrown && base.isAuthority)
-                {
-                    this.hasThrown = true;
-                    ExplodeFirecrackers();
-                }
-
-                if (base.isAuthority && base.fixedAge >= this.duration)
-                {
-                    this.outer.SetNextStateToMain();
-                    return;
-                }
+                ExplodeFirecracker(damageType);
+                ApplyDamageAndForceToPlayer();
+                this.outer.SetNextStateToMain();
             }
         }
 
         public override void OnExit()
         {
-            if (!hasExploded) ExplodeFirecrackers();
+            ApplyBuffs(buffsToApply, buffsDuration);
             base.OnExit();
         }
 
-        private void ExplodeFirecrackers()
+        private void ExplodeFirecracker(DamageType damageType)
         {
-            foreach (GameObject firecracker in this.firecrackers)
+            if (base.isAuthority)
             {
                 // Damage enemies
                 BlastAttack blast = new BlastAttack();
-                blast.radius = this.radius;
+                blast.radius = this.blastRadius;
                 blast.procCoefficient = this.procCoefficient;
                 blast.position = firecracker.transform.position;
                 blast.attacker = base.gameObject;
                 blast.crit = Util.CheckRoll(base.characterBody.crit, base.characterBody.master);
                 blast.baseDamage = base.characterBody.damage * this.enemyDamageCoefficient;
                 blast.falloffModel = BlastAttack.FalloffModel.None;
-                blast.damageType = DamageType.Shock5s;
+                blast.damageType = damageType;
                 blast.baseForce = 800f;
                 blast.teamIndex = TeamComponent.GetObjectTeam(blast.attacker);
                 blast.attackerFiltering = AttackerFiltering.NeverHitSelf;
                 blast.Fire();
+            }
 
-                // Effects
-                Util.PlaySound("Firecracker", base.gameObject);
-                //EffectManager.SimpleEffect(Modules.Assets.firecrackerExplosion, firecracker.transform.position, Quaternion.identity, true);
+            // Effects
+            AkSoundEngine.PostEvent(explodeSound, firecracker);
+            EffectManager.SimpleEffect(explosionEffect, firecracker.transform.position, Quaternion.identity, true);
 
-                // Force and damage to player
-                if (base.isAuthority && base.characterBody && base.characterBody.characterMotor)
+            // Destroy firecracker after explosion
+            Destroy(this.firecracker);
+        }
+
+        private void ApplyDamageAndForceToPlayer()
+        {
+            Vector3 relativePosToFirecracker = this.transform.position - firecracker.transform.position;
+            float distanceToFirecracker = relativePosToFirecracker.magnitude;
+
+            // If player is in blast radius, apply force and take damage
+            if (distanceToFirecracker < this.blastRadius)
+            {
+                // Create force info
+                var direction = relativePosToFirecracker / distanceToFirecracker;
+                float force = base.characterBody.characterMotor.isGrounded ? this.groundForce : this.airForce;
+                float mass = base.characterBody.characterMotor ? base.characterBody.characterMotor.mass : 1f;
+                float acceleration = base.characterBody.acceleration;
+                float ySpeed = Trajectory.CalculateInitialYSpeedForHeight(force, -acceleration);
+
+                if (base.healthComponent)
                 {
-                    Vector3 pos = this.transform.position - firecracker.transform.position;
-                    float distance = pos.magnitude;
-
-                    if (distance < this.radius)
+                    if (NetworkServer.active)
                     {
                         // Create damage info
                         DamageInfo damageToTake = new DamageInfo()
@@ -144,29 +131,29 @@ namespace CamperMod.SkillStates
                             rejected = false,
                             procChainMask = default(ProcChainMask),
                             procCoefficient = 0f,
-                            damageType = (DamageType.NonLethal | DamageType.BypassArmor),
+                            damageType = DamageType.NonLethal,
                             damageColorIndex = DamageColorIndex.Default,
                             dotIndex = DotController.DotIndex.None
                         };
-
-                        // Create force info
-                        var direction = pos / distance;
-                        float force = base.characterBody.characterMotor.isGrounded ? this.groundForce : this.airForce;
-                        float mass = base.characterBody.characterMotor ? base.characterBody.characterMotor.mass : 1f;
-                        float acceleration = base.characterBody.acceleration;
-                        float ySpeed = Trajectory.CalculateInitialYSpeedForHeight(force, -acceleration);
-
-                        // Take damage and apply force
                         base.healthComponent.TakeDamage(damageToTake);
-                        base.characterBody.characterMotor.ApplyForce(ySpeed * mass * direction, false, false);
-
-                        // Destroy firecracker gameobject
-                        Destroy(firecracker);
-                        //if (NetworkServer.active) NetworkServer.UnSpawn(firecracker);
-
-                        this.hasExploded = true;
                     }
                 }
+
+                // Apply force to player
+                if (base.isAuthority)
+                {
+                    if (base.characterBody.characterMotor) base.characterBody.characterMotor.ApplyForce(ySpeed * mass * direction, false, false);
+                }
+            }
+        }
+
+        private void ApplyBuffs(RoR2.BuffDef[] buffs, float duration)
+        {
+            if (buffs.Length == 0) return;
+
+            foreach(RoR2.BuffDef buff in buffs)
+            {
+                if(base.characterBody && NetworkServer.active) base.characterBody.AddTimedBuff(buff, duration);
             }
         }
 
@@ -174,16 +161,12 @@ namespace CamperMod.SkillStates
         {
             Vector3 forwardDirection = base.inputBank.moveVector.normalized;
 
-            if (this.isRemote)
-            {
-                if (Physics.Raycast(base.transform.position, base.transform.TransformDirection(Vector3.down), out RaycastHit primaryHit)) return primaryHit.point + (Vector3.up * BaseFirecrackerState.distanceAboveGround);
-                else return base.transform.position - (Vector3.down * 1000f); // default will basically never be hit
-            }
+            if (Physics.Raycast(base.transform.position, base.transform.TransformDirection(Vector3.down), out RaycastHit hit, maxDropDistance)) return hit.point + (Vector3.up * BaseFirecrackerState.distanceAboveGround);
 
-            if (Physics.Raycast(base.transform.position, base.transform.TransformDirection(Vector3.down), out RaycastHit hit, BaseFirecrackerState.maxDropDistance)) return hit.point + (Vector3.up * BaseFirecrackerState.distanceAboveGround);
-
-            this.chargeTime = 0.01f;
-            return base.transform.position + (Vector3.down * BaseFirecrackerState.maxDropDistanceOffset) + (-forwardDirection * BaseFirecrackerState.maxDropDistanceOffset);
+            // Return a position right beneath the player if outside of the max drop distance
+            // Also set the duration to 0.05 so that it explodes instantly
+            this.duration = 0.05f;
+            return base.transform.position + (Vector3.down * distanceBelowPlayerWhenAirborne) + (-forwardDirection * distanceBelowPlayerWhenAirborne);
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()

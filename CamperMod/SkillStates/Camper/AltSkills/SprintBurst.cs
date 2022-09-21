@@ -2,14 +2,14 @@
 using CamperMod.Modules;
 using UnityEngine;
 using RoR2;
-using System.Collections.Generic;
 using RoR2.Audio;
+using UnityEngine.Networking;
 
 namespace CamperMod.SkillStates
 {
     public class SprintBurst : BaseSkillState
     {
-        public static string hitboxName = "SpinBox";
+        public static string hitboxName = "SpinHitbox";
         public static float sprintMultiplier = 3f;
         public static float sprintFOV = 100f;
         public static float sprintTurnSpeed = 360f;
@@ -19,9 +19,7 @@ namespace CamperMod.SkillStates
         public static float procCoefficient = 0.2f;
 
         private Animator animator;
-        //private List<GameObject> effectList = new List<GameObject> { Assets.goodEffect, Assets.greatEffect };
         private OverlapAttack attack;
-        private NetworkSoundEventIndex impactSound;
         private float charYaw;
         private float lastYaw;
         private float stopwatch;
@@ -43,58 +41,71 @@ namespace CamperMod.SkillStates
             if (base.cameraTargetParams) base.cameraTargetParams.fovOverride = Mathf.Lerp(60f, SprintBurst.sprintFOV, 0.1f);
         }
 
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+
+            this.charYaw += this.characterDirection.yaw - this.lastYaw;
+            this.lastYaw = this.characterDirection.yaw;
+
+            // Increase speed
+            Vector3 velocity = this.inputBank.moveVector * this.moveSpeedStat * SprintBurst.sprintMultiplier;
+            velocity.y = this.characterMotor.velocity.y;
+
+            if (base.isAuthority) this.characterMotor.velocity = velocity;
+
+            if (Mathf.Abs(this.charYaw) > 270f)
+            {
+                this.charYaw = 0f;
+                FireAttack();
+            }
+            
+
+            // Get angle between movement and character direction
+            float movementAngle = Vector3.Angle(base.characterDirection.forward, base.characterMotor.velocity);
+            Log.Debug("Movement: " + (movementAngle > 100f));
+            if (movementAngle > 100f) // Approximately running backwards ;)
+            {
+                // Count how long moonwalk has lasted
+                this.stopwatch += Time.fixedDeltaTime;
+                Log.Debug("Stopwatch: " + (this.stopwatch >= this.moonwalkInterval));
+                if (this.stopwatch >= this.moonwalkInterval)
+                {
+                    Log.Debug("CharBody: " + base.characterBody);
+                    // Add buffs if moonwalking for long enough
+                    if (base.characterBody)
+                    {
+                        Log.Debug("Network: " + NetworkServer.active);
+                        if (NetworkServer.active)
+                        {
+                            base.characterBody.AddTimedBuff(Buffs.moonwalkBuff, 4f);
+                            base.characterBody.RecalculateStats();
+                        }
+                    }
+
+                    if (base.cameraTargetParams) base.cameraTargetParams.AddRecoil(2f, 5f, 2f, 5f); // Some feedback
+
+                    this.stopwatch = 0f; // Reset the timer since the buff is stackable
+                }
+            }
+            else this.stopwatch = 0f;
+            
+
+            // Exit if attacking, util button pressed or no movement input (ugly)
+            if (animator.GetBool("attacking") || base.inputBank.skill3.down && base.fixedAge >= Modules.StaticValues.keyLiftGrace || base.inputBank.moveVector == Vector3.zero || base.fixedAge >= SprintBurst.duration)
+            {
+                this.outer.SetNextStateToMain();
+            }
+            
+        }
+
         public override void OnExit()
         {
             // Reset camera and turnspeed
             if (base.cameraTargetParams) base.cameraTargetParams.fovOverride = -1f;
-            base.characterDirection.turnSpeed = Modules.StaticValues.turnSpeed;
+            if (base.isAuthority) base.characterDirection.turnSpeed = Modules.StaticValues.turnSpeed;
 
             base.OnExit();
-        }
-
-        public override void FixedUpdate()
-        {
-            base.FixedUpdate();
-            if (base.isAuthority)
-            {
-                this.charYaw += this.characterDirection.yaw - this.lastYaw;
-                this.lastYaw = this.characterDirection.yaw;
-
-                // Increase speed
-                Vector3 velocity = this.inputBank.moveVector * this.moveSpeedStat * SprintBurst.sprintMultiplier;
-                velocity.y = this.characterMotor.velocity.y;
-                this.characterMotor.velocity = velocity;
-
-                if (Mathf.Abs(this.charYaw) > 270f)
-                {
-                    //EffectManager.SimpleEffect(Assets.spinEffect, this.transform.position, Quaternion.identity, true);
-                    this.charYaw = 0f;
-                    FireAttack();
-                }
-
-                float movementAngle = Vector3.Angle(this.characterDirection.forward, this.characterMotor.velocity);
-                if (movementAngle > 100f)
-                {
-                    this.stopwatch += Time.fixedDeltaTime;
-                    if (this.stopwatch >= this.moonwalkInterval)
-                    {
-                        base.characterBody.AddTimedBuff(Buffs.spinBuff, 4f);
-                        base.characterBody.RecalculateStats();
-
-                        if (base.cameraTargetParams) base.cameraTargetParams.AddRecoil(2f, 5f, 2f, 5f);
-
-                        //EffectManager.SimpleEffect(this.effectList[Random.Range(0, this.effectList.Count)], this.transform.position, Quaternion.identity, true);
-                        this.stopwatch = 0f;
-                    }
-                }
-                else this.stopwatch = 0f;
-
-                // Exit if attacking, util button pressed or no movement input (ugly)
-                if ((animator.GetBool("attacking") || base.inputBank.skill3.down && base.fixedAge >= Modules.StaticValues.keyLiftGrace || base.inputBank.moveVector == Vector3.zero || base.fixedAge >= SprintBurst.duration))
-                {
-                    this.outer.SetNextStateToMain();
-                }
-            }
         }
 
         private void FireAttack()
@@ -107,20 +118,23 @@ namespace CamperMod.SkillStates
                 hitboxGroup = System.Array.Find<HitBoxGroup>(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup element) => element.groupName == SprintBurst.hitboxName);
             }
 
-            this.attack = new OverlapAttack();
-            this.attack.damageType = DamageType.Stun1s;
-            this.attack.attacker = base.gameObject;
-            this.attack.inflictor = base.gameObject;
-            this.attack.teamIndex = base.GetTeam();
-            this.attack.damage = SprintBurst.damageCoefficient * this.damageStat;
-            this.attack.procCoefficient = SprintBurst.procCoefficient;
-            this.attack.hitEffectPrefab = null;
-            this.attack.forceVector = Vector3.up;
-            this.attack.pushAwayForce = 800f;
-            this.attack.hitBoxGroup = hitboxGroup;
-            this.attack.isCrit = base.RollCrit();
-            this.attack.impactSound = this.impactSound;
-            this.attack.Fire();
+            if (base.isAuthority)
+            {
+                this.attack = new OverlapAttack();
+                this.attack.damageType = DamageType.Stun1s;
+                this.attack.attacker = base.gameObject;
+                this.attack.inflictor = base.gameObject;
+                this.attack.teamIndex = base.GetTeam();
+                this.attack.damage = SprintBurst.damageCoefficient * this.damageStat;
+                this.attack.procCoefficient = SprintBurst.procCoefficient;
+                this.attack.hitEffectPrefab = null;
+                this.attack.forceVector = Vector3.up;
+                this.attack.pushAwayForce = 800f;
+                this.attack.hitBoxGroup = hitboxGroup;
+                this.attack.isCrit = base.RollCrit();
+                this.attack.impactSound = new NetworkSoundEventIndex();
+                this.attack.Fire();
+            }
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()

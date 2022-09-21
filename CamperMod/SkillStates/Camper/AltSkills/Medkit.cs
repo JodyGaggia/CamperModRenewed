@@ -1,27 +1,34 @@
 ﻿using RoR2;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace CamperMod.SkillStates
 {
     public class Medkit : BaseHealState
     {
+        private float timeSinceLastHit;
+        private float duration = Modules.StaticValues.medkitDuration;
+
         public override void OnEnter()
         {
-            if (NetworkServer.active) base.characterBody.AddTimedBuff(RoR2Content.Buffs.ArmorBoost, 0.2f);
-            if (base.cameraTargetParams) base.cameraTargetParams.fovOverride = 50f;
-
-            this.duration = 3f;
-            this.hptCoefficient = 0.002f;
-            this.isFragile = true;
+            this.hpsCoefficient = Modules.StaticValues.medkitHPSCoefficient;
 
             base.OnEnter();
         }
 
-        public override void OnExit()
+        public override void FixedUpdate()
         {
-            if (base.cameraTargetParams) base.cameraTargetParams.fovOverride = -1f;
-            base.OnExit();
+            base.FixedUpdate();
+
+            if (base.isAuthority)
+            {
+                this.timeSinceLastHit = this.healthComponent.timeSinceLastHit;
+
+                if (this.timeSinceLastHit <= this.fixedAge || this.fixedAge >= this.duration)
+                {
+                    this.outer.SetNextStateToMain();
+                    return;
+                }
+            }
         }
     }
 }

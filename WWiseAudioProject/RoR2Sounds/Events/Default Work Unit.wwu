@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" SchemaVersion="97">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="FirecrackerExplode" ID="{AD113A7E-EB8D-4245-9B32-E301A83D3847}">
+					<ChildrenList>
+						<Action Name="" ID="{444C048A-3A59-401F-82DB-AE7F84610598}" ShortID="409553274">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="FirecrackerExplodeContainer" ID="{F222EA42-A3B2-4057-98AC-FADC21717B82}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="FirecrackerDrop" ID="{FD4CC101-0CFF-4D5C-8144-0A6C4D4F9B7A}">
+					<ChildrenList>
+						<Action Name="" ID="{60C048F7-3214-4917-8CDF-6EA5A9424A74}" ShortID="964764132">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="FirecrackerFuseContainer" ID="{C2022CF7-5AE1-4AF7-9939-9E35C7442155}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="WinterExplode" ID="{428B82B2-ABC9-47FD-9DA2-A368A189F1A2}">
+					<ChildrenList>
+						<Action Name="" ID="{68E37A1D-7F32-4386-93EA-7F950EC08D40}" ShortID="689486178">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="WinterPartyStarterExplodeContainer" ID="{E11FFA4E-1096-47BB-8F58-57BFD8DEA09A}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="FlashbangDrop" ID="{3480AE46-7CB5-450F-B4B6-8D8A10B89F25}">
+					<ChildrenList>
+						<Action Name="" ID="{2E2B9C73-BC2E-49D5-91FA-04B4A939C0C4}" ShortID="937454710">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="FlashbangDropContainer" ID="{899D8B93-6913-45B9-B3DD-32D8443DD6A6}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="FlashbangExplode" ID="{A26EA14C-1D2D-4668-80B1-5D828E5B079A}">
+					<ChildrenList>
+						<Action Name="" ID="{111F9327-0A8A-4B5E-A5D1-247BD37897F2}" ShortID="714593502">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="FlashbangExplodeContainer" ID="{237D2F0C-E44F-41C5-92F3-2323BBE41DF9}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Heal" ID="{F3BE7F8B-7649-46F0-A309-AC1F916D5A8F}">
+					<ChildrenList>
+						<Action Name="" ID="{49C27941-6A0A-4419-8228-82E99FD1F025}" ShortID="565951421">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="HealingContainer" ID="{D03BC333-8584-48C8-951D-AE18050000A8}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_player_footstep" ID="{3379A701-9798-446D-AD47-AAC629D47A6E}">
+					<ChildrenList>
+						<Action Name="" ID="{A9A960AF-02D1-4125-92C1-EE0BBEAED1A9}" ShortID="359004427">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Footsteps" ID="{C790DEBC-717B-4117-933B-FE519B59518E}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

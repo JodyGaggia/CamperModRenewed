@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{0C268736-F343-4463-B2ED-5822B4143887}" SchemaVersion="97">
+	<SoundBanks>
+		<WorkUnit Name="Default Work Unit" ID="{0C268736-F343-4463-B2ED-5822B4143887}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="SurvivorSounds" ID="{E98A97CD-6C62-45E0-AA01-5D1F5C4156A2}">
+					<ObjectInclusionList>
+						<ObjectRef Name="FirecrackerExplode" ID="{AD113A7E-EB8D-4245-9B32-E301A83D3847}" WorkUnitID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Play_player_footstep" ID="{3379A701-9798-446D-AD47-AAC629D47A6E}" WorkUnitID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="FlashbangDrop" ID="{3480AE46-7CB5-450F-B4B6-8D8A10B89F25}" WorkUnitID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="FlashbangExplode" ID="{A26EA14C-1D2D-4668-80B1-5D828E5B079A}" WorkUnitID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="Heal" ID="{F3BE7F8B-7649-46F0-A309-AC1F916D5A8F}" WorkUnitID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="WinterExplode" ID="{428B82B2-ABC9-47FD-9DA2-A368A189F1A2}" WorkUnitID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="FirecrackerDrop" ID="{FD4CC101-0CFF-4D5C-8144-0A6C4D4F9B7A}" WorkUnitID="{ABDD14DF-86D6-4DA2-AEED-75887055FC3A}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundBanks>
+</WwiseDocument>

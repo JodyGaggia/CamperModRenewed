@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="12" SoundbankVersion="135">
+	<RootPaths>
+		<ProjectRoot>C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\</ProjectRoot>
+		<SourceFilesRoot>C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\GeneratedSoundBanks\Windows</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="682534779" Language="SFX" Hash="2580684405">
+			<ObjectPath>\SoundBanks\Default Work Unit\SurvivorSounds</ObjectPath>
+			<ShortName>SurvivorSounds</ShortName>
+			<Path>SurvivorSounds.bnk</Path>
+			<IncludedEvents>
+				<Event Id="4068621199" Name="FirecrackerDrop" ObjectPath="\Events\Default Work Unit\FirecrackerDrop">
+					<IncludedMemoryFiles>
+						<File Id="945067170" Language="SFX">
+							<ShortName>FirecrackerFuse.wav</ShortName>
+							<Path>SFX\FirecrackerFuse_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2779295623" Name="FirecrackerExplode" ObjectPath="\Events\Default Work Unit\FirecrackerExplode">
+					<IncludedMemoryFiles>
+						<File Id="613039993" Language="SFX">
+							<ShortName>HealingSound.wav</ShortName>
+							<Path>SFX\HealingSound_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1745229328" Name="FlashbangDrop" ObjectPath="\Events\Default Work Unit\FlashbangDrop">
+					<IncludedMemoryFiles>
+						<File Id="272824869" Language="SFX">
+							<ShortName>FlashbangDrop04.wav</ShortName>
+							<Path>SFX\FlashbangDrop04_3F75BDB9.wem</Path>
+						</File>
+						<File Id="298245170" Language="SFX">
+							<ShortName>FlashbangDrop01.wav</ShortName>
+							<Path>SFX\FlashbangDrop01_3F75BDB9.wem</Path>
+						</File>
+						<File Id="877098815" Language="SFX">
+							<ShortName>FlashbangDrop02.wav</ShortName>
+							<Path>SFX\FlashbangDrop02_3F75BDB9.wem</Path>
+						</File>
+						<File Id="920217821" Language="SFX">
+							<ShortName>FlashbangDrop03.wav</ShortName>
+							<Path>SFX\FlashbangDrop03_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3050145550" Name="FlashbangExplode" ObjectPath="\Events\Default Work Unit\FlashbangExplode">
+					<IncludedMemoryFiles>
+						<File Id="116316465" Language="SFX">
+							<ShortName>FlashbangExplode01.wav</ShortName>
+							<Path>SFX\FlashbangExplode01_3F75BDB9.wem</Path>
+						</File>
+						<File Id="683125542" Language="SFX">
+							<ShortName>FlashbangExplode02.wav</ShortName>
+							<Path>SFX\FlashbangExplode02_3F75BDB9.wem</Path>
+						</File>
+						<File Id="943301928" Language="SFX">
+							<ShortName>FlashbangExplode03.wav</ShortName>
+							<Path>SFX\FlashbangExplode03_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3448274447" Name="Heal" ObjectPath="\Events\Default Work Unit\Heal">
+					<IncludedMemoryFiles>
+						<File Id="696996759" Language="SFX">
+							<ShortName>HealingSound03.wav</ShortName>
+							<Path>SFX\HealingSound03_3F75BDB9.wem</Path>
+						</File>
+						<File Id="970374530" Language="SFX">
+							<ShortName>HealingSound01.wav</ShortName>
+							<Path>SFX\HealingSound01_3F75BDB9.wem</Path>
+						</File>
+						<File Id="986967581" Language="SFX">
+							<ShortName>HealingSound02.wav</ShortName>
+							<Path>SFX\HealingSound02_3F75BDB9.wem</Path>
+						</File>
+						<File Id="1014507613" Language="SFX">
+							<ShortName>HealingSound05.wav</ShortName>
+							<Path>SFX\HealingSound05_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1724675634" Name="Play_player_footstep" ObjectPath="\Events\Default Work Unit\Play_player_footstep">
+					<IncludedMemoryFiles>
+						<File Id="169122834" Language="SFX">
+							<ShortName>Footstep04.wav</ShortName>
+							<Path>SFX\Footstep04_3F75BDB9.wem</Path>
+						</File>
+						<File Id="288356724" Language="SFX">
+							<ShortName>Footstep02.wav</ShortName>
+							<Path>SFX\Footstep02_3F75BDB9.wem</Path>
+						</File>
+						<File Id="340873930" Language="SFX">
+							<ShortName>Footstep06.wav</ShortName>
+							<Path>SFX\Footstep06_3F75BDB9.wem</Path>
+						</File>
+						<File Id="349644311" Language="SFX">
+							<ShortName>Footstep09.wav</ShortName>
+							<Path>SFX\Footstep09_3F75BDB9.wem</Path>
+						</File>
+						<File Id="453238218" Language="SFX">
+							<ShortName>Footstep01.wav</ShortName>
+							<Path>SFX\Footstep01_3F75BDB9.wem</Path>
+						</File>
+						<File Id="576491224" Language="SFX">
+							<ShortName>Footstep05.wav</ShortName>
+							<Path>SFX\Footstep05_3F75BDB9.wem</Path>
+						</File>
+						<File Id="592228018" Language="SFX">
+							<ShortName>Footstep03.wav</ShortName>
+							<Path>SFX\Footstep03_3F75BDB9.wem</Path>
+						</File>
+						<File Id="620602755" Language="SFX">
+							<ShortName>Footstep07.wav</ShortName>
+							<Path>SFX\Footstep07_3F75BDB9.wem</Path>
+						</File>
+						<File Id="901320844" Language="SFX">
+							<ShortName>Footstep08.wav</ShortName>
+							<Path>SFX\Footstep08_3F75BDB9.wem</Path>
+						</File>
+						<File Id="982075321" Language="SFX">
+							<ShortName>Footstep10.wav</ShortName>
+							<Path>SFX\Footstep10_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="251611133" Name="WinterExplode" ObjectPath="\Events\Default Work Unit\WinterExplode">
+					<IncludedMemoryFiles>
+						<File Id="254849632" Language="SFX">
+							<ShortName>WinterExplode02.wav</ShortName>
+							<Path>SFX\WinterExplode02_3F75BDB9.wem</Path>
+						</File>
+						<File Id="373757494" Language="SFX">
+							<ShortName>WinterExplode01.wav</ShortName>
+							<Path>SFX\WinterExplode01_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+			</IncludedEvents>
+			<GameParameters>
+				<GameParameter Id="3673881719" Name="Volume_SFX" ObjectPath="\Game Parameters\Default Work Unit\Volume_SFX"/>
+			</GameParameters>
+		</SoundBank>
+		<SoundBank Id="1355168291" Language="SFX" Hash="263542888">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

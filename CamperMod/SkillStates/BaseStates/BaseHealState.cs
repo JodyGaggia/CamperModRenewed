@@ -1,19 +1,17 @@
 ﻿using EntityStates;
 using RoR2;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace CamperMod.SkillStates
 {
     public class BaseHealState : BaseSkillState
     {
-        protected float hptCoefficient = 0.003f;
-        protected float duration = 3f;
-        protected float soundInterval = 1f;
-        protected bool isFragile = false;
+        protected float hpsCoefficient = 0.003f;
+        protected float soundHealInterval = 1f;
 
         private Animator animator;
         private float healAmount;
-        private float timeSinceLastHit;
         private float stopwatch;
 
         public override void OnEnter()
@@ -21,7 +19,7 @@ namespace CamperMod.SkillStates
             base.OnEnter();
 
             base.characterBody.isSprinting = false;
-            this.healAmount = base.healthComponent.fullHealth * this.hptCoefficient;
+            this.healAmount = base.healthComponent.fullHealth * this.hpsCoefficient;
 
             this.animator = base.GetModelAnimator();
             this.animator.SetBool("isHealing", true);
@@ -33,35 +31,19 @@ namespace CamperMod.SkillStates
             base.FixedUpdate();
 
             this.stopwatch += Time.fixedDeltaTime;
-            if (this.stopwatch >= this.soundInterval)
+            if (this.stopwatch >= this.soundHealInterval)
             {
-                Util.PlaySound("Heal", base.gameObject);
+                AkSoundEngine.PostEvent("Heal", base.gameObject);
+                if(NetworkServer.active) base.healthComponent.Heal(this.healAmount, default(ProcChainMask), true);
                 this.stopwatch = 0f;
             }
-
-            if (base.isAuthority && this.isFragile)
-            {
-                this.timeSinceLastHit = this.healthComponent.timeSinceLastHit;
-
-                if (this.timeSinceLastHit <= base.fixedAge || base.fixedAge >= this.duration)
-                {
-                    this.outer.SetNextStateToMain();
-                    return;
-                }
-            }
-            else if (base.isAuthority && base.inputBank.skill4.down && base.fixedAge > Modules.StaticValues.keyLiftGrace)
-            {
-                this.outer.SetNextStateToMain();
-                return;
-            }
-
-            base.healthComponent.Heal(this.healAmount, default(ProcChainMask), true);
         }
 
         public override void OnExit()
         {
             base.PlayAnimation("Fullbody, Override", "Heal", "Heal.playbackRate", 0.05f);
             this.animator.SetBool("isHealing", false);
+
             base.OnExit();
         }
 

@@ -1,6 +1,7 @@
 ﻿using CamperMod.SkillStates;
 using System.Collections.Generic;
 using System;
+using CamperMod.SkillStates.Camper.AltSkills.Flashbang;
 
 namespace CamperMod.Modules
 {
@@ -17,17 +18,18 @@ namespace CamperMod.Modules
             //Modules.Content.AddEntityState(typeof(Slap));
 
             // Secondary
-            Modules.Content.AddEntityState(typeof(DropFirecracker));
-            //Modules.Content.AddEntityState(typeof(RemoteFirecracker));
+            Modules.Content.AddEntityState(typeof(Firecracker));
+            Modules.Content.AddEntityState(typeof(WinterFirecracker));
+            Modules.Content.AddEntityState(typeof(FlashbangFirecracker));
 
             // Utility
             Modules.Content.AddEntityState(typeof(DeadHard));
-            //Modules.Content.AddEntityState(typeof(SprintBurst));
-            //Modules.Content.AddEntityState(typeof(BalancedLanding));
+            Modules.Content.AddEntityState(typeof(SprintBurst));
+            Modules.Content.AddEntityState(typeof(BalancedLanding));
 
             // Special
             Modules.Content.AddEntityState(typeof(SelfCare));
-            //Modules.Content.AddEntityState(typeof(Medkit));
+            Modules.Content.AddEntityState(typeof(Medkit));
         }
     }
 }

@@ -14,20 +14,21 @@ namespace CamperMod.Modules
     {
         #region camper's stuff
         // particle effects
-        //internal static GameObject firecrackerMesh;
+        internal static GameObject firecrackerMesh;
+        internal static GameObject winterFirecrackerMesh;
+        internal static GameObject flashbangMesh;
+        internal static GameObject lockerDropPod;
         //internal static GameObject deathEffect;
-        //internal static GameObject deadHardHit;
-        //internal static GameObject firecrackerExplosion;
-        //internal static GameObject goodEffect;
-        //internal static GameObject greatEffect;
-        //internal static GameObject spinEffect;
+        internal static GameObject firecrackerExplosion;
+        internal static GameObject winterExplosion;
+        internal static GameObject flashbangExplosion;
         #endregion
 
         // the assetbundle to load assets from
         internal static AssetBundle mainAssetBundle;
 
         // CHANGE THIS
-        private const string assetbundleName = "camperassets2";
+        private const string assetbundleName = "camperassets";
         //change this to your project's name if/when you've renamed it
         private const string csProjName = "CamperMod";
         
@@ -82,13 +83,14 @@ namespace CamperMod.Modules
                 return;
             }
 
-            //firecrackerMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlFirecracker");
-            //deathEffect = Assets.LoadEffect("CamperDeathEffect");
-            //deadHardHit = Assets.LoadEffect("DeadHardImpactEffect");
-            //firecrackerExplosion = Assets.LoadEffect("FirecrackerExplosionEffect", true);
-            //spinEffect = Assets.LoadEffect("SpinEffect", true);
-            //greatEffect = Assets.LoadEffect("GreatEffect", true);
-            //goodEffect = Assets.LoadEffect("GoodEffect", true);
+            firecrackerMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlFirecracker");
+            winterFirecrackerMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlWinterFirecracker");
+            flashbangMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlFlashbang");
+            firecrackerExplosion = Assets.LoadEffect("FirecrackerExplosion", true);
+            winterExplosion = Assets.LoadEffect("WinterExplosion", true);
+            flashbangExplosion = Assets.LoadEffect("FlashbangExplosion", true);
+            lockerDropPod = Assets.mainAssetBundle.LoadAsset<GameObject>("LockerDropPod");
+            lockerDropPod.AddComponent<VehicleSeat>();
         }
 
         private static GameObject CreateTracer(string originalTracerName, string newTracerName)
