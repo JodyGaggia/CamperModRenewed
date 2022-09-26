@@ -9,12 +9,12 @@ namespace CamperMod.SkillStates
     {
         private static float baseDamageCoefficient = Modules.StaticValues.teabagDamageCoefficient;
         private static float extraDamageCoefficient = Modules.StaticValues.teabagRangeDamageCoefficient;
-        private static float facingDamageCoefficient = Modules.StaticValues.teabagFacingDamageCoefficient;
+        private static float facingDamageCoefficient = Modules.StaticValues.passiveFacingDamageMultiplier;
 
-        private static float procCoefficient = 0.5f;
-        private static float baseDuration = 0.1f;
-        private static float force = 10f;
-        private static float range = 125f;
+        public static float procCoefficient = 0.4f;
+        public static float baseDuration = 0.1f;
+        public static float force = 10f;
+        public static float range = 125f;
 
         private Animator animator;
         private float damageCoefficient;

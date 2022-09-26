@@ -1,19 +1,18 @@
 ﻿using RoR2;
 using System;
 using UnityEngine;
-using R2API;
 
 namespace CamperMod.Modules
 {
-    public abstract class GenericModdedUnlockable : ModdedUnlockable
+    internal abstract class GenericModdedUnlockable : ModdedUnlockable
     {
         public abstract string AchievementTokenPrefix { get; }
         public abstract string AchievementSpriteName { get; }
 
         public override string AchievementIdentifier { get => AchievementTokenPrefix + "UNLOCKABLE_ACHIEVEMENT_ID"; }
         public override string UnlockableIdentifier { get => AchievementTokenPrefix + "UNLOCKABLE_REWARD_ID"; }
-        public override string AchievementNameToken { get => AchievementTokenPrefix + "UNLOCKABLE_ACHIEVEMENT_NAME"; }
-        public override string AchievementDescToken { get => AchievementTokenPrefix + "UNLOCKABLE_ACHIEVEMENT_DESC"; }
+        public override string AchievementNameToken { get => AchievementTokenPrefix + "UNLOCKABLE_ACHIEVEMENT_ID_NAME"; }
+        public override string AchievementDescToken { get => AchievementTokenPrefix + "UNLOCKABLE_ACHIEVEMENT_ID_DESCRIPTION"; }
         public override string UnlockableNameToken { get => AchievementTokenPrefix + "UNLOCKABLE_UNLOCKABLE_NAME"; }
 
         public override Sprite Sprite => Assets.mainAssetBundle.LoadAsset<Sprite>(AchievementSpriteName);

@@ -27,6 +27,13 @@
 				</Event>
 				<Event Name="WinterExplode" ID="{428B82B2-ABC9-47FD-9DA2-A368A189F1A2}">
 					<ChildrenList>
+						<Action Name="" ID="{F8305A6D-F081-4773-8FF1-5961BB8A417A}" ShortID="576521921">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="FirecrackerExplodeContainer" ID="{F222EA42-A3B2-4057-98AC-FADC21717B82}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
 						<Action Name="" ID="{68E37A1D-7F32-4386-93EA-7F950EC08D40}" ShortID="689486178">
 							<ReferenceList>
 								<Reference Name="Target">
@@ -75,6 +82,28 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="Footsteps" ID="{C790DEBC-717B-4117-933B-FE519B59518E}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="DecisiveStrike" ID="{AC3D31B0-A8FC-4D41-800A-BD08672352A3}">
+					<ChildrenList>
+						<Action Name="" ID="{2336789C-55E7-40A7-A118-353622852E3F}" ShortID="587147178">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="DecisiveStrike" ID="{698ECC78-B7C6-48D5-98F1-259DE48F6C8E}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="PlayMenuSounds" ID="{FD605A2B-2276-4675-88FC-EBE2B4628432}">
+					<ChildrenList>
+						<Action Name="" ID="{D3900D25-EC14-4E87-852F-AA702085DD2B}" ShortID="759835843">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="MenuMusic" ID="{3218BEF4-C2E6-4E23-BF37-FF45DC790E0D}" WorkUnitID="{0F4E35DD-2FFA-47FE-9FA9-23AB767D2102}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

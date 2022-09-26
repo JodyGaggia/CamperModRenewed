@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -33,8 +34,10 @@ namespace CamperMod.SkillStates
             this.stopwatch += Time.fixedDeltaTime;
             if (this.stopwatch >= this.soundHealInterval)
             {
-                AkSoundEngine.PostEvent("Heal", base.gameObject);
-                if(NetworkServer.active) base.healthComponent.Heal(this.healAmount, default(ProcChainMask), true);
+                AkSoundEngine.PostEvent("Heal", base.gameObject); // good enough
+
+                if (NetworkServer.active && base.healthComponent) base.healthComponent.Heal(this.healAmount, default(ProcChainMask), true);
+
                 this.stopwatch = 0f;
             }
         }

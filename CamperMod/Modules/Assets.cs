@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using RoR2;
 using System.IO;
-using System.Collections.Generic;
-using RoR2.UI;
 using System;
 
 namespace CamperMod.Modules
@@ -17,8 +15,6 @@ namespace CamperMod.Modules
         internal static GameObject firecrackerMesh;
         internal static GameObject winterFirecrackerMesh;
         internal static GameObject flashbangMesh;
-        internal static GameObject lockerDropPod;
-        //internal static GameObject deathEffect;
         internal static GameObject firecrackerExplosion;
         internal static GameObject winterExplosion;
         internal static GameObject flashbangExplosion;
@@ -83,14 +79,25 @@ namespace CamperMod.Modules
                 return;
             }
 
-            firecrackerMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlFirecracker");
-            winterFirecrackerMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlWinterFirecracker");
-            flashbangMesh = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>("mdlFlashbang");
+            firecrackerMesh = SetupFirecrackerPrefab("mdlFirecracker");
+            winterFirecrackerMesh = SetupFirecrackerPrefab("mdlWinterFirecracker");
+            flashbangMesh = SetupFirecrackerPrefab("mdlFlashbang");
+
             firecrackerExplosion = Assets.LoadEffect("FirecrackerExplosion", true);
             winterExplosion = Assets.LoadEffect("WinterExplosion", true);
             flashbangExplosion = Assets.LoadEffect("FlashbangExplosion", true);
-            lockerDropPod = Assets.mainAssetBundle.LoadAsset<GameObject>("LockerDropPod");
-            lockerDropPod.AddComponent<VehicleSeat>();
+        }
+
+        private static GameObject SetupFirecrackerPrefab(string assetName)
+        {
+            GameObject prefab = Modules.Assets.mainAssetBundle.LoadAsset<GameObject>(assetName);
+            prefab.AddComponent<NetworkIdentity>();
+            prefab.AddComponent<BoxCollider>();
+            prefab.AddComponent<Rigidbody>();
+            prefab.GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.Interpolate;
+            prefab.layer = LayerIndex.fakeActor.intVal;
+
+            return prefab;
         }
 
         private static GameObject CreateTracer(string originalTracerName, string newTracerName)

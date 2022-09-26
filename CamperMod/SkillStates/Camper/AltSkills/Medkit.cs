@@ -1,7 +1,4 @@
-﻿using RoR2;
-using UnityEngine.Networking;
-
-namespace CamperMod.SkillStates
+﻿namespace CamperMod.SkillStates
 {
     public class Medkit : BaseHealState
     {

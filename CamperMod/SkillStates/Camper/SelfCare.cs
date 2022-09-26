@@ -1,5 +1,6 @@
 ﻿using UnityEngine.Networking;
 using RoR2;
+using CamperMod.Modules;
 
 namespace CamperMod.SkillStates
 {
@@ -12,7 +13,7 @@ namespace CamperMod.SkillStates
                 if (NetworkServer.active) base.characterBody.AddTimedBuff(RoR2Content.Buffs.ArmorBoost, 1f);
             }
 
-            this.hpsCoefficient = Modules.StaticValues.selfCareHPSCoefficient;
+            this.hpsCoefficient = StaticValues.selfCareHPSCoefficient;
 
             base.OnEnter();
         }

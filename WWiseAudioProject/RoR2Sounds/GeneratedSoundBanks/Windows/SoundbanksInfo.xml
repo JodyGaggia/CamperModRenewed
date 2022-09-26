@@ -11,11 +11,23 @@
 	<StreamedFiles/>
 	<MediaFilesNotInAnyBank/>
 	<SoundBanks>
-		<SoundBank Id="682534779" Language="SFX" Hash="2580684405">
+		<SoundBank Id="682534779" Language="SFX" Hash="118715336">
 			<ObjectPath>\SoundBanks\Default Work Unit\SurvivorSounds</ObjectPath>
 			<ShortName>SurvivorSounds</ShortName>
 			<Path>SurvivorSounds.bnk</Path>
 			<IncludedEvents>
+				<Event Id="3210653353" Name="DecisiveStrike" ObjectPath="\Events\Default Work Unit\DecisiveStrike">
+					<IncludedMemoryFiles>
+						<File Id="152284618" Language="SFX">
+							<ShortName>DecisiveStrike02.wav</ShortName>
+							<Path>SFX\DecisiveStrike02_3F75BDB9.wem</Path>
+						</File>
+						<File Id="326942065" Language="SFX">
+							<ShortName>DecisiveStrike01.wav</ShortName>
+							<Path>SFX\DecisiveStrike01_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="4068621199" Name="FirecrackerDrop" ObjectPath="\Events\Default Work Unit\FirecrackerDrop">
 					<IncludedMemoryFiles>
 						<File Id="945067170" Language="SFX">
@@ -132,6 +144,14 @@
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
+				<Event Id="400910458" Name="PlayMenuSounds" ObjectPath="\Events\Default Work Unit\PlayMenuSounds">
+					<IncludedMemoryFiles>
+						<File Id="893005391" Language="SFX">
+							<ShortName>Menu Theme.wav</ShortName>
+							<Path>SFX\Menu Theme_3F75BDB9.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
 				<Event Id="251611133" Name="WinterExplode" ObjectPath="\Events\Default Work Unit\WinterExplode">
 					<IncludedMemoryFiles>
 						<File Id="254849632" Language="SFX">
@@ -141,6 +161,10 @@
 						<File Id="373757494" Language="SFX">
 							<ShortName>WinterExplode01.wav</ShortName>
 							<Path>SFX\WinterExplode01_3F75BDB9.wem</Path>
+						</File>
+						<File Id="613039993" Language="SFX">
+							<ShortName>HealingSound.wav</ShortName>
+							<Path>SFX\HealingSound_3F75BDB9.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>

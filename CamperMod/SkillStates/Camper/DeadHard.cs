@@ -9,6 +9,7 @@ namespace CamperMod.SkillStates
 {
     public class DeadHard : BaseSkillState
     {
+        // Wrote this code long ago and won't clean it up
         public static string hitboxName = "DeadHardHitbox";
         public static float basePushForce = 285f;
         public static float maxPushForce = 8000f;
@@ -23,7 +24,6 @@ namespace CamperMod.SkillStates
         private HitStopCachedState hitStopCachedState;
         private OverlapAttack attack;
         private Animator animator;
-        private NetworkSoundEventIndex impactSound;
         private float duration;
         private float antiBounceDuration;
         private float hitPauseTimer;
@@ -43,7 +43,10 @@ namespace CamperMod.SkillStates
             // Set variables
             this.animator = base.GetModelAnimator();
             this.duration = DeadHard.baseDuration / this.attackSpeedStat;
-            this.antiBounceDuration = this.duration / 3f;
+            
+            // This exists to prevent the character from ungrounding at the start of the ability
+            // I want bouncing (or ungrounding) to be possible at the end since this feels like 2017 dead hard parkour
+            this.antiBounceDuration = this.duration / 3f; 
             this.pushForce = DeadHard.basePushForce * this.damageStat;
             if (this.pushForce > DeadHard.maxPushForce) this.pushForce = DeadHard.maxPushForce;
             base.characterMotor.velocity.y = 0f;
@@ -67,22 +70,19 @@ namespace CamperMod.SkillStates
                 hitBoxGroup = Array.Find<HitBoxGroup>(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup element) => element.groupName == DeadHard.hitboxName);
             }
 
-            if (base.isAuthority)
-            {
-                this.attack = new OverlapAttack();
-                this.attack.damageType = DamageType.Stun1s;
-                this.attack.attacker = base.gameObject;
-                this.attack.inflictor = base.gameObject;
-                this.attack.teamIndex = base.GetTeam();
-                this.attack.damage = DeadHard.damageCoefficient * this.damageStat;
-                this.attack.procCoefficient = 1f;
-                this.attack.hitEffectPrefab = null;
-                this.attack.forceVector = DeadHard.force;
-                this.attack.pushAwayForce = this.pushForce;
-                this.attack.hitBoxGroup = hitBoxGroup;
-                this.attack.isCrit = base.RollCrit();
-                this.attack.impactSound = this.impactSound;
-            }
+            this.attack = new OverlapAttack();
+            this.attack.damageType = DamageType.Stun1s;
+            this.attack.attacker = base.gameObject;
+            this.attack.inflictor = base.gameObject;
+            this.attack.teamIndex = base.GetTeam();
+            this.attack.damage = DeadHard.damageCoefficient * this.damageStat;
+            this.attack.procCoefficient = 1f;
+            this.attack.hitEffectPrefab = null;
+            this.attack.forceVector = DeadHard.force;
+            this.attack.pushAwayForce = this.pushForce;
+            this.attack.hitBoxGroup = hitBoxGroup;
+            this.attack.isCrit = base.RollCrit();
+            this.attack.impactSound = new NetworkSoundEventIndex();
         }
 
         public override void FixedUpdate()
@@ -98,39 +98,40 @@ namespace CamperMod.SkillStates
                 // Force character to face initial direction
                 base.characterDirection.forward = this.forwardDirection;
 
-                // Create and consume hitpauses
+                // Create hitpause on enemy hit
                 if (this.attack.Fire())
                 {
                     if (!inHitPause)
                     {
-                        //EffectManager.SimpleMuzzleFlash(Modules.Assets.deadHardHit, base.gameObject, "DeadHardEffect", true);
                         this.hitStopCachedState = base.CreateHitStopCachedState(base.characterMotor, this.animator, "DeadHard.playbackRate");
                         this.hitPauseTimer = DeadHard.baseHitPauseTimer / this.attackSpeedStat;
                         this.inHitPause = true;
                     }
                 }
 
-                if (this.hitPauseTimer <= 0 && this.inHitPause)
+                // Freeze character if in hitpause
+                if (this.inHitPause)
                 {
-                    base.ConsumeHitStopCachedState(this.hitStopCachedState, base.characterMotor, this.animator);
-                    this.inHitPause = false;
-                }
+                    base.characterMotor.velocity = Vector3.zero;
+                    this.animator.SetFloat("DeadHard.playbackRate", 0f);
 
-                // Move character forward
-                if (!this.inHitPause)
+                    // Reset hitpause state
+                    if (this.hitPauseTimer <= 0)
+                    {
+                        base.ConsumeHitStopCachedState(this.hitStopCachedState, base.characterMotor, this.animator);
+                        this.inHitPause = false;
+                    }
+                }
+                else
                 {
-                    if (base.characterMotor && base.characterDirection)
+                    // Set character velocity if not in hitpause
+                    if (base.characterMotor)
                     {
                         Vector3 velocity = this.forwardDirection * this.moveSpeedStat * Mathf.Lerp(DeadHard.speedUpperCoefficient, DeadHard.speedLowerCoefficient, base.age / this.duration);
                         if (antiBounceDuration > 0) velocity.y = 0f;
                         else velocity.y = base.characterMotor.velocity.y;
                         base.characterMotor.velocity = velocity;
                     }
-                }
-                else // If in hitpause freeze character
-                {
-                    base.characterMotor.velocity = Vector3.zero;
-                    this.animator.SetFloat("DeadHard.playbackRate", 0f);
                 }
 
                 if (base.fixedAge >= this.duration)

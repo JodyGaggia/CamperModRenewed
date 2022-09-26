@@ -14,7 +14,6 @@ namespace CamperMod.Modules.Survivors
         public override string bodyName => "Camper";
 
         public const string CAMPER_PREFIX = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_";
-        //used when registering your survivor's language tokens
         public override string survivorTokenPrefix => CAMPER_PREFIX;
 
         public override BodyInfo bodyInfo { get; set; } = new BodyInfo
@@ -27,12 +26,12 @@ namespace CamperMod.Modules.Survivors
             bodyColor = Color.white,
 
             crosshair = Modules.Assets.LoadCrosshair("Standard"),
-            //podPrefab = Modules.Assets.lockerDropPod,
             podPrefab = RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/SurvivorPod"),
 
             maxHealth = 80f,
             healthRegen = 2.5f,
-            armor = 15f,
+            armor = 5f,
+            damageGrowth = 3.7f,
 
             jumpCount = 1,
         };
@@ -56,15 +55,37 @@ namespace CamperMod.Modules.Survivors
         public override ConfigEntry<bool> characterEnabledConfig => null; //Modules.Config.CharacterEnableConfig(bodyName);
 
         private static UnlockableDef masterySkinUnlockableDef;
-
+        private static UnlockableDef winterFirecrackerUnlockableDef;
+        private static UnlockableDef sprintBurstUnlockableDef;
+        private static UnlockableDef flashbangUnlockableDef;
+        private static UnlockableDef medkitUnlockableDef;
+        private static UnlockableDef decisiveStrikeUnlockableDef;
         public override void InitializeCharacter()
         {
             base.InitializeCharacter();
+            AddTrackerComponent();
+
+            this.displayPrefab.AddComponent<SelectSound>();
         }
 
+        private void AddTrackerComponent()
+        {
+            this.bodyPrefab.AddComponent<DSTracker>();
+            DSTracker tracker = this.bodyPrefab.GetComponent<DSTracker>();
+            tracker.maxTrackingDistance = 40f;
+            tracker.maxTrackingAngle = 20f;
+        }
+
+        // there's definitely (probably) a better way of doing this since im using RegisterAchievement() but idk how to fix it
+        // L
         public override void InitializeUnlockables()
         {
-            masterySkinUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.MasteryAchievement>();
+            masterySkinUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.MasteryAchievement>(true);
+            winterFirecrackerUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.WinterFirecrackerAchievement>(true);
+            sprintBurstUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.SprintBurstAchievement>(true);
+            flashbangUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.FlashbangAchievement>(true);
+            medkitUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.MedkitAchievement>(true);
+            decisiveStrikeUnlockableDef = Modules.Unlockables.AddUnlockable<Modules.Achievements.DecisiveStrikeAchievement>(true);
         }
 
         public override void InitializeHitboxes()
@@ -77,6 +98,9 @@ namespace CamperMod.Modules.Survivors
 
             Transform hitboxTransform2 = childLocator.FindChild("SpinHitbox");
             Modules.Prefabs.SetupHitbox(model, hitboxTransform2, "SpinHitbox");
+
+            Transform hitboxTransform3 = childLocator.FindChild("DecisiveStrikeHitbox");
+            Modules.Prefabs.SetupHitbox(model, hitboxTransform3, "DecisiveStrikeHitbox");
         }
 
         public override void InitializeSkills()
@@ -88,9 +112,9 @@ namespace CamperMod.Modules.Survivors
             SkillDef primarySkillDef = Modules.Skills.CreateSkillDef(new SkillDefInfo(prefix + "PRIMARY_TEABAG_NAME",
                                                                           prefix + "PRIMARY_TEABAG_DESCRIPTION",
                                                                           Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texTeabag"),
-                                                                          new string[] { "KEYWORD_INFURIATING" },
+                                                                          new string[] { },
                                                                           new EntityStates.SerializableEntityStateType(typeof(SkillStates.Teabag)),
-                                                                          "Weapon",
+                                                                          "Slide",
                                                                           false));
 
 
@@ -105,9 +129,9 @@ namespace CamperMod.Modules.Survivors
                 skillDescriptionToken = prefix + "SECONDARY_FIRECRACKER_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFirecracker"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Firecracker)),
-                activationStateMachineName = "Slide",
+                activationStateMachineName = "Weapon",
                 baseMaxStock = 2,
-                baseRechargeInterval = 6f,
+                baseRechargeInterval = 7f,
                 beginSkillCooldownOnSkillEnd = false,
                 canceledFromSprinting = false,
                 forceSprintDuringState = false,
@@ -115,7 +139,7 @@ namespace CamperMod.Modules.Survivors
                 interruptPriority = EntityStates.InterruptPriority.Skill,
                 resetCooldownTimerOnUse = false,
                 isCombatSkill = true,
-                mustKeyPress = false,
+                mustKeyPress = true,
                 cancelSprintingOnActivation = false,
                 rechargeStock = 1,
                 requiredStock = 1,
@@ -132,17 +156,17 @@ namespace CamperMod.Modules.Survivors
                 skillDescriptionToken = prefix + "SECONDARY_WINTERFIRECRACKER_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texWinterFirecracker"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.WinterFirecracker)),
-                activationStateMachineName = "Slide",
-                baseMaxStock = 1,
+                activationStateMachineName = "Weapon",
+                baseMaxStock = 2,
                 baseRechargeInterval = 9f,
-                beginSkillCooldownOnSkillEnd = true,
+                beginSkillCooldownOnSkillEnd = false,
                 canceledFromSprinting = false,
                 forceSprintDuringState = false,
                 fullRestockOnAssign = true,
                 interruptPriority = EntityStates.InterruptPriority.Skill,
                 resetCooldownTimerOnUse = false,
                 isCombatSkill = true,
-                mustKeyPress = false,
+                mustKeyPress = true,
                 cancelSprintingOnActivation = false,
                 rechargeStock = 1,
                 requiredStock = 1,
@@ -159,17 +183,17 @@ namespace CamperMod.Modules.Survivors
                 skillDescriptionToken = prefix + "SECONDARY_FLASHBANGFIRECRACKER_DESCRIPTION",
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texFlashbang"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(FlashbangFirecracker)),
-                activationStateMachineName = "Slide",
-                baseMaxStock = 1,
-                baseRechargeInterval = 8f,
-                beginSkillCooldownOnSkillEnd = true,
+                activationStateMachineName = "Weapon",
+                baseMaxStock = 2,
+                baseRechargeInterval = 12f,
+                beginSkillCooldownOnSkillEnd = false,
                 canceledFromSprinting = false,
                 forceSprintDuringState = false,
                 fullRestockOnAssign = true,
                 interruptPriority = EntityStates.InterruptPriority.Skill,
                 resetCooldownTimerOnUse = false,
                 isCombatSkill = true,
-                mustKeyPress = false,
+                mustKeyPress = true,
                 cancelSprintingOnActivation = false,
                 rechargeStock = 1,
                 requiredStock = 1,
@@ -190,7 +214,7 @@ namespace CamperMod.Modules.Survivors
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.DeadHard)),
                 activationStateMachineName = "Body",
                 baseMaxStock = 1,
-                baseRechargeInterval = 4f,
+                baseRechargeInterval = 6f,
                 beginSkillCooldownOnSkillEnd = false,
                 canceledFromSprinting = false,
                 forceSprintDuringState = true,
@@ -206,7 +230,6 @@ namespace CamperMod.Modules.Survivors
             });
 
             Modules.Skills.AddUtilitySkills(bodyPrefab, deadHardDef);
-
             
             SkillDef sprintBurstDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
             {
@@ -233,32 +256,6 @@ namespace CamperMod.Modules.Survivors
             });
 
             Modules.Skills.AddUtilitySkills(bodyPrefab, sprintBurstDef);
-
-            SkillDef balancedLandingDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
-            {
-                skillName = prefix + "UTILITY_BALANCEDLANDING_NAME",
-                skillNameToken = prefix + "UTILITY_BALANCEDLANDING_NAME",
-                skillDescriptionToken = prefix + "UTILITY_BALANCEDLANDING_DESCRIPTION",
-                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texBalancedLanding"),
-                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.BalancedLanding)),
-                activationStateMachineName = "Slide",
-                baseMaxStock = 1,
-                baseRechargeInterval = 6f,
-                beginSkillCooldownOnSkillEnd = true,
-                canceledFromSprinting = false,
-                forceSprintDuringState = true,
-                fullRestockOnAssign = true,
-                interruptPriority = EntityStates.InterruptPriority.Skill,
-                resetCooldownTimerOnUse = false,
-                isCombatSkill = false,
-                mustKeyPress = false,
-                cancelSprintingOnActivation = false,
-                rechargeStock = 1,
-                requiredStock = 1,
-                stockToConsume = 1
-            });
-
-            Modules.Skills.AddUtilitySkills(bodyPrefab, balancedLandingDef);
             
             #endregion
 
@@ -272,7 +269,7 @@ namespace CamperMod.Modules.Survivors
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.SelfCare)),
                 activationStateMachineName = "Body",
                 baseMaxStock = 1,
-                baseRechargeInterval = 10f,
+                baseRechargeInterval = 12f,
                 beginSkillCooldownOnSkillEnd = true,
                 canceledFromSprinting = true,
                 forceSprintDuringState = false,
@@ -280,7 +277,7 @@ namespace CamperMod.Modules.Survivors
                 interruptPriority = EntityStates.InterruptPriority.Frozen,
                 resetCooldownTimerOnUse = false,
                 isCombatSkill = false,
-                mustKeyPress = false,
+                mustKeyPress = true,
                 cancelSprintingOnActivation = true,
                 rechargeStock = 1,
                 requiredStock = 1,
@@ -299,8 +296,8 @@ namespace CamperMod.Modules.Survivors
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texMedkit"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Medkit)),
                 activationStateMachineName = "Body",
-                baseMaxStock = 1,
-                baseRechargeInterval = 15f,
+                baseMaxStock = 1, // 1
+                baseRechargeInterval = 15f, // 15
                 beginSkillCooldownOnSkillEnd = true,
                 canceledFromSprinting = true,
                 forceSprintDuringState = false,
@@ -308,7 +305,7 @@ namespace CamperMod.Modules.Survivors
                 interruptPriority = EntityStates.InterruptPriority.Frozen,
                 resetCooldownTimerOnUse = false,
                 isCombatSkill = false,
-                mustKeyPress = false,
+                mustKeyPress = true,
                 cancelSprintingOnActivation = true,
                 rechargeStock = 1,
                 requiredStock = 1,
@@ -317,7 +314,58 @@ namespace CamperMod.Modules.Survivors
             });
 
             Modules.Skills.AddSpecialSkills(bodyPrefab, medkitDef);
+
+            SkillDef decisiveStrikeDef = Modules.Skills.CreateSkillDef(new SkillDefInfo
+            {
+                skillName = prefix + "SPECIAL_DECISIVESTRIKE_NAME",
+                skillNameToken = prefix + "SPECIAL_DECISIVESTRIKE_NAME",
+                skillDescriptionToken = prefix + "SPECIAL_DECISIVESTRIKE_DESCRIPTION",
+                skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texDecisiveStrike"),
+                activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.DecisiveStrike)),
+                activationStateMachineName = "Body",
+                baseMaxStock = 1,
+                baseRechargeInterval = 12f,
+                beginSkillCooldownOnSkillEnd = true,
+                canceledFromSprinting = false,
+                forceSprintDuringState = false,
+                fullRestockOnAssign = true,
+                interruptPriority = EntityStates.InterruptPriority.Frozen,
+                resetCooldownTimerOnUse = false,
+                isCombatSkill = true,
+                mustKeyPress = false,
+                cancelSprintingOnActivation = false,
+                rechargeStock = 1,
+                requiredStock = 1,
+                stockToConsume = 1,
+                keywordTokens = new string[] { }
+            });
+
+            Modules.Skills.AddSpecialSkills(bodyPrefab, decisiveStrikeDef);
             #endregion
+
+            SkillLocator skillLocator = bodyPrefab.GetComponent<SkillLocator>();
+
+            Modules.Skills.AddUnlockablesToFamily(skillLocator.secondary.skillFamily, 
+                // Default Firecracker
+                null, 
+                // Winter Firecracker
+                winterFirecrackerUnlockableDef, 
+                // Flashbang
+                flashbangUnlockableDef);
+
+            Modules.Skills.AddUnlockablesToFamily(skillLocator.utility.skillFamily,
+                // Dead Hard
+                null,
+                // Sprint Burst
+                sprintBurstUnlockableDef);
+
+            Modules.Skills.AddUnlockablesToFamily(skillLocator.special.skillFamily,
+                // Self Care
+                null,
+                // Medkit
+                medkitUnlockableDef,
+                // Decisive Strike
+                decisiveStrikeUnlockableDef);
         }
 
         public override void InitializeSkins()
@@ -381,7 +429,8 @@ namespace CamperMod.Modules.Survivors
             SkinDef neaPSkin = Modules.Skins.CreateSkinDef(CAMPER_PREFIX + "NEAPRESTIGE_SKIN_NAME",
                 Assets.mainAssetBundle.LoadAsset<Sprite>("texNeaPrestigeSkin"),
                 neaPRendererInfos,
-                model);
+                model,
+                masterySkinUnlockableDef);
 
             neaPSkin.meshReplacements = Modules.Skins.getMeshReplacements(neaPRendererInfos, "meshNea");
             neaPSkin.rendererInfos[0].defaultMaterial = Modules.Materials.CreateHopooMaterial("matNeaPrestige");

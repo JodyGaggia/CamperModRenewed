@@ -2,7 +2,6 @@
 using CamperMod.Modules.Survivors;
 using R2API.Utils;
 using RoR2;
-using System.Collections.Generic;
 using System.Security;
 using System.Security.Permissions;
 
@@ -50,53 +49,31 @@ namespace CamperMod
             // survivor initialization
             new Camper().Initialize();
 
-            // now make a content pack and add it- this part will change with the next update
             new Modules.ContentPacks().Initialize();
 
             Hook();
-        }
-
-        // Passive (better chest items)
-        private void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
-        {
-            string chestType = self.gameObject.name.ToLower();
-            if (!chestType.Contains("chest")) orig.Invoke(self);
-
-            if (chestType.Contains("chest1"))
-            {
-                PickupIndex dropItem = this.RollItem();
-
-                if (dropItem != PickupIndex.none) self.SetFieldValue("dropPickup", dropItem);
-            }
-            orig.Invoke(self);
-        }
-
-        private PickupIndex RollItem()
-        {
-            System.Random random = new System.Random(System.DateTime.UtcNow.Second);
-
-            List<PickupIndex> availableItems;
-            int itemIndex = 0;
-
-            int randomChance = random.Next(0, 101);
-
-            if (randomChance <= 65) availableItems = Run.instance.availableTier1DropList;
-            else if (randomChance <= 99) availableItems = Run.instance.availableTier2DropList;
-            else availableItems = Run.instance.availableTier3DropList;
-
-            if (availableItems.Count != 0)
-            {
-                itemIndex = random.Next(0, availableItems.Count);
-                return availableItems[itemIndex];
-            }
-
-            return PickupIndex.none;
         }
 
         private void Hook()
         {
             // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.Run.Start += Run_Start;
+        }
+
+        private void Run_Start(On.RoR2.Run.orig_Start orig, Run self)
+        {
+            orig(self);
+
+            foreach(PlayerCharacterMasterController player in PlayerCharacterMasterController.instances)
+            {
+                if(player != null)
+                {
+                    CharacterBody body = player.master.GetBody();
+
+                    if (body) Log.Debug("test");
+                }
+            }
         }
 
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
@@ -107,8 +84,8 @@ namespace CamperMod
             {
                 if (self.HasBuff(Modules.Buffs.moonwalkBuff))
                 {
-                    self.moveSpeed += self.moveSpeed / 4f;
-                    self.attackSpeed += 0.2f;
+                    self.moveSpeed *= 1.2f;
+                    self.attackSpeed *= 1.2f;
                 }
             }
         }

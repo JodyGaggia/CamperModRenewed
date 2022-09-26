@@ -19,11 +19,8 @@ namespace CamperMod.SkillStates
 
             this.blastRadius = 20f;
 
-            this.airForce = 12.5f;
+            this.airForce = 8f;
             this.groundForce = 2f;
-
-            this.buffsToApply = new RoR2.BuffDef[] { };
-            this.buffsDuration = 3f;
 
             base.OnEnter();
         }

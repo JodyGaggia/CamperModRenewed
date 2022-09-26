@@ -222,6 +222,20 @@
 														</ModifierInfo>
 													</ModifierList>
 												</Property>
+												<Property Name="PlayMechanismInfiniteOrNumberOfLoops" Type="int16" Value="0"/>
+												<Property Name="PlayMechanismLoop" Type="bool" Value="True"/>
+												<Property Name="PlayMechanismLoopCount" Type="int32">
+													<ModifierList>
+														<ModifierInfo>
+															<Modifier Name="" ID="{CCB79F06-3C04-4F4A-8704-5844662E8F7E}">
+																<PropertyList>
+																	<Property Name="Enabled" Type="bool" Value="True"/>
+																	<Property Name="Max" Type="Real64" Value="3"/>
+																</PropertyList>
+															</Modifier>
+														</ModifierInfo>
+													</ModifierList>
+												</Property>
 												<Property Name="RandomAvoidRepeating" Type="bool" Value="False"/>
 												<Property Name="Volume" Type="Real64">
 													<ValueList>
@@ -621,6 +635,13 @@
 																<MediaID ID="254849632"/>
 															</MediaIDList>
 														</AudioFileSource>
+														<AudioFileSource Name="Menu Theme" ID="{9F7F1EB5-2FAE-4530-9AE4-57CD1EFBD4B8}">
+															<Language>SFX</Language>
+															<AudioFile>Menu Theme.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="893005391"/>
+															</MediaIDList>
+														</AudioFileSource>
 													</ChildrenList>
 													<ActiveSourceList>
 														<ActiveSource Name="WinterExplode02" ID="{563103C6-47AF-4B6D-BA12-B5AAB97C51CB}" Platform="Linked"/>
@@ -646,7 +667,7 @@
 												</Property>
 												<Property Name="Volume" Type="Real64">
 													<ValueList>
-														<Value>4</Value>
+														<Value>1</Value>
 													</ValueList>
 												</Property>
 											</PropertyList>
@@ -880,6 +901,129 @@
 													</ChildrenList>
 													<ActiveSourceList>
 														<ActiveSource Name="Footstep10" ID="{1C17BE6D-1CDB-4F2F-AFE5-E3D1004459FD}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
+											</ChildrenList>
+										</RandomSequenceContainer>
+										<RandomSequenceContainer Name="DecisiveStrike" ID="{698ECC78-B7C6-48D5-98F1-259DE48F6C8E}" ShortID="64966235">
+											<PropertyList>
+												<Property Name="OverridePositioning" Type="bool" Value="True"/>
+												<Property Name="Pitch" Type="int32">
+													<ValueList>
+														<Value>-500</Value>
+													</ValueList>
+													<ModifierList>
+														<ModifierInfo>
+															<Modifier Name="" ID="{807C32C7-2538-44D5-93A8-05EAE6BE8981}">
+																<PropertyList>
+																	<Property Name="Enabled" Type="bool" Value="True"/>
+																	<Property Name="Min" Type="Real64" Value="-200"/>
+																</PropertyList>
+															</Modifier>
+														</ModifierInfo>
+													</ModifierList>
+												</Property>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>6</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Attenuation">
+													<ObjectRef Name="Firecracker Explode Attenuation" ID="{E8185862-EA76-43BE-88C6-A8B01A8BA203}" WorkUnitID="{B667836D-95C0-4502-BD37-10AFA6C6C712}"/>
+												</Reference>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{50F82EBD-EC41-4193-B382-F17F22754E60}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{841810EE-0DE4-458E-B3CC-AF26B9B8A3C6}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<Sound Name="DecisiveStrike01" ID="{CBC46BEB-74B5-4FBA-8800-947346236F47}" ShortID="599361821">
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{50F82EBD-EC41-4193-B382-F17F22754E60}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{841810EE-0DE4-458E-B3CC-AF26B9B8A3C6}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="DecisiveStrike01" ID="{3E67F99E-0CF3-47CA-90DC-D6014DD71804}">
+															<Language>SFX</Language>
+															<AudioFile>DecisiveStrike01.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="326942065"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="DecisiveStrike01" ID="{3E67F99E-0CF3-47CA-90DC-D6014DD71804}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
+												<Sound Name="DecisiveStrike02" ID="{DCAE98A4-4734-4A75-8550-A06D4C97B1DC}" ShortID="437759844">
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{50F82EBD-EC41-4193-B382-F17F22754E60}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{841810EE-0DE4-458E-B3CC-AF26B9B8A3C6}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="DecisiveStrike02" ID="{50D2BFC8-7A74-4936-8FCD-CA1927AF1B64}">
+															<Language>SFX</Language>
+															<AudioFile>DecisiveStrike02.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="152284618"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="DecisiveStrike02" ID="{50D2BFC8-7A74-4936-8FCD-CA1927AF1B64}" Platform="Linked"/>
+													</ActiveSourceList>
+												</Sound>
+											</ChildrenList>
+										</RandomSequenceContainer>
+										<RandomSequenceContainer Name="MenuMusic" ID="{3218BEF4-C2E6-4E23-BF37-FF45DC790E0D}" ShortID="103008757">
+											<PropertyList>
+												<Property Name="Volume" Type="Real64">
+													<ValueList>
+														<Value>-8</Value>
+													</ValueList>
+												</Property>
+											</PropertyList>
+											<ReferenceList>
+												<Reference Name="Conversion">
+													<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{50F82EBD-EC41-4193-B382-F17F22754E60}"/>
+												</Reference>
+												<Reference Name="OutputBus">
+													<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{841810EE-0DE4-458E-B3CC-AF26B9B8A3C6}"/>
+												</Reference>
+											</ReferenceList>
+											<ChildrenList>
+												<Sound Name="Menu Theme" ID="{65B9F8A5-EFE1-478F-ADEA-C202C186144F}" ShortID="769741884">
+													<ReferenceList>
+														<Reference Name="Conversion">
+															<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{50F82EBD-EC41-4193-B382-F17F22754E60}"/>
+														</Reference>
+														<Reference Name="OutputBus">
+															<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{841810EE-0DE4-458E-B3CC-AF26B9B8A3C6}"/>
+														</Reference>
+													</ReferenceList>
+													<ChildrenList>
+														<AudioFileSource Name="Menu Theme" ID="{09C70038-3885-405D-BEA0-5CF1C708400C}">
+															<Language>SFX</Language>
+															<AudioFile>Menu Theme.wav</AudioFile>
+															<MediaIDList>
+																<MediaID ID="893005391"/>
+															</MediaIDList>
+														</AudioFileSource>
+													</ChildrenList>
+													<ActiveSourceList>
+														<ActiveSource Name="Menu Theme" ID="{09C70038-3885-405D-BEA0-5CF1C708400C}" Platform="Linked"/>
 													</ActiveSourceList>
 												</Sound>
 											</ChildrenList>

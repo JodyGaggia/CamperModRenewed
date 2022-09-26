@@ -9,20 +9,22 @@ namespace CamperMod.Modules
         {
             #region Camper
             string prefix = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_";
+            string achievementPrefix = "ACHIEVEMENT_" + prefix;
+            string achievementAffix = "UNLOCKABLE_ACHIEVEMENT_ID_";
 
-            string desc = "The survivor teabags to infuriate her enemies.<color=#CCD3E0>" + Environment.NewLine + Environment.NewLine;
-            desc = desc + "< ! > Teabag's main damage comes from it's infuriation aspect - target enemies that are also targeting you." + Environment.NewLine + Environment.NewLine;
-            desc = desc + "< ! > Firecrackers instantly explode when 3m above the ground, making it a great mobility tool." + Environment.NewLine + Environment.NewLine;
+            string desc = "Survivors teabags to infuriate their enemies.<color=#CCD3E0>" + Environment.NewLine + Environment.NewLine;
+            desc = desc + "< ! > Teabag's main damage comes from its infuriation aspect - target enemies that are also targetting you." + Environment.NewLine + Environment.NewLine;
+            desc = desc + $"< ! > Firecrackers instantly explode when {Modules.StaticValues.firecrackerInstantExplodeHeight}m above the ground, making it a great mobility tool." + Environment.NewLine + Environment.NewLine;
             desc = desc + "< ! > Dead Hard can knock back and damage smaller enemies on collision, making it strong near map edges." + Environment.NewLine + Environment.NewLine;
             desc = desc + "< ! > Self Care briefly provides an armour boost so it can be used to mitigate a strong blow." + Environment.NewLine + Environment.NewLine;
 
             string outro = "..and so she left, searching for a way back home.";
             string outroFailure = "..and so she vanished, forever missing.";
 
-            LanguageAPI.Add(prefix + "NAME", "The Survivor");
+            LanguageAPI.Add(prefix + "NAME", "The Survivors");
             LanguageAPI.Add(prefix + "DESCRIPTION", desc);
             LanguageAPI.Add(prefix + "SUBTITLE", "The Entity's Plaything");
-            LanguageAPI.Add(prefix + "LORE", "lore");
+            LanguageAPI.Add(prefix + "LORE", StaticValues.lore);
             LanguageAPI.Add(prefix + "OUTRO_FLAVOR", outro);
             LanguageAPI.Add(prefix + "OUTRO_FAILURE", outroFailure);
 
@@ -34,13 +36,13 @@ namespace CamperMod.Modules
             #endregion
 
             #region Passive
-            LanguageAPI.Add(prefix + "PASSIVE_PLUNDERERS_NAME", "Plunderer's Instinct");
-            LanguageAPI.Add(prefix + "PASSIVE_PLUNDERERS_DESCRIPTION", $"Common chests have a <style=cIsUtility>15%</style> chance to drop better loot.");
+            LanguageAPI.Add(prefix + "PASSIVE_OBJECTOFOBSESSION_NAME", "Object of Obsession");
+            LanguageAPI.Add(prefix + "PASSIVE_OBJECTOFOBSESSION_DESCRIPTION", $"Teabagging deals <style=cIsDamage>bonus damage</style> to enemies facing you.");
             #endregion
 
             #region Primary
             LanguageAPI.Add(prefix + "PRIMARY_TEABAG_NAME", "Teabag");
-            LanguageAPI.Add(prefix + "PRIMARY_TEABAG_DESCRIPTION", $"<style=cDeath>Infuriating.</style> Teabag at an enemy for up to <style=cIsDamage>{100f * (StaticValues.teabagDamageCoefficient + StaticValues.teabagFacingDamageCoefficient + StaticValues.teabagRangeDamageCoefficient)}% damage.</style>");
+            LanguageAPI.Add(prefix + "PRIMARY_TEABAG_DESCRIPTION", $"Teabag at an enemy for up to <style=cIsDamage>{100f * (StaticValues.teabagDamageCoefficient + StaticValues.passiveFacingDamageMultiplier + StaticValues.teabagRangeDamageCoefficient)}% damage.</style>");
             #endregion
 
             #region Secondary
@@ -70,17 +72,33 @@ namespace CamperMod.Modules
             LanguageAPI.Add(prefix + "SPECIAL_SELFCARE_DESCRIPTION", $"<style=cArtifact>Channelling.</style> Heal yourself for <style=cIsHealing>{100f * Modules.StaticValues.selfCareHPSCoefficient}% maximum HP</style> every second. <style=cIsUtility>Reactivate this skill to stop healing.</style>");
 
             LanguageAPI.Add(prefix + "SPECIAL_MEDKIT_NAME", "Medkit");
-            LanguageAPI.Add(prefix + "SPECIAL_MEDKIT_DESCRIPTION", $"<style=cIsHealth>Fragile.</style> <style=cArtifact>Channelling.</style> Heal yourself for <style=cIsHealing>{100f * StaticValues.medkitHPSCoefficient}% maximum HP</style> every second for <style=cIsUtility>{StaticValues.medkitDuration} seconds.</style>");
+            LanguageAPI.Add(prefix + "SPECIAL_MEDKIT_DESCRIPTION", $"<style=cIsHealth>Fragile.</style> <style=cArtifact>Channelling.</style> Heal yourself for <style=cIsHealing>{200f * StaticValues.medkitHPSCoefficient}% maximum HP</style> every second for <style=cIsUtility>{StaticValues.medkitDuration} seconds.</style>");
+
+            LanguageAPI.Add(prefix + "SPECIAL_DECISIVESTRIKE_NAME", "Decisive Strike");
+            LanguageAPI.Add(prefix + "SPECIAL_DECISIVESTRIKE_DESCRIPTION", $"Dash to a targetted enemy, dealing <style=cIsDamage>{100f * StaticValues.decisiveStrikeDamageCoefficient}% damage</style>. <style=cIsHealing>Heal</style> for a portion of the damage dealt.");
             #endregion
 
             #region Achievements
-            LanguageAPI.Add(prefix + "MASTERYUNLOCKABLE_ACHIEVEMENT_NAME", "Survivor: Mastery");
-            LanguageAPI.Add(prefix + "MASTERYUNLOCKABLE_ACHIEVEMENT_DESC", "As a survivor, beat the game or obliterate on Monsoon.");
-            LanguageAPI.Add(prefix + "MASTERYUNLOCKABLE_UNLOCKABLE_NAME", "Survivor: Mastery");
+            LanguageAPI.Add(achievementPrefix + "MASTERY" + achievementAffix + "NAME", "Survivor: Mastery");
+            LanguageAPI.Add(achievementPrefix + "MASTERY" + achievementAffix + "DESCRIPTION", "As a survivor, beat the game or obliterate on Monsoon.");
+
+            LanguageAPI.Add(achievementPrefix + "WINTERFIRECRACKER" + achievementAffix + "NAME", "Survivor: Cold As Ice");
+            LanguageAPI.Add(achievementPrefix + "WINTERFIRECRACKER" + achievementAffix + "DESCRIPTION", "As a survivor, defeat the teleporter boss on the Siphoned Forest on Monsoon.");
+
+            LanguageAPI.Add(achievementPrefix + "SPRINTBURST" + achievementAffix + "NAME", "Survivor: Athlete");
+            LanguageAPI.Add(achievementPrefix + "SPRINTBURST" + achievementAffix + "DESCRIPTION", "As a survivor, carry 5 Paul's Goat Hoofs at once.");
+
+            LanguageAPI.Add(achievementPrefix + "FLASHBANG" + achievementAffix + "NAME", "Survivor: Escape Artist");
+            LanguageAPI.Add(achievementPrefix + "FLASHBANG" + achievementAffix + "DESCRIPTION", "As a survivor, kill an enemy while cloaked.");
+
+            LanguageAPI.Add(achievementPrefix + "MEDKIT" + achievementAffix + "NAME", "Survivor: Self Taught");
+            LanguageAPI.Add(achievementPrefix + "MEDKIT" + achievementAffix + "DESCRIPTION", "As a survivor, heal more than half your health using medkits at once.");
+
+            LanguageAPI.Add(achievementPrefix + "DECISIVESTRIKE" + achievementAffix + "NAME", "Survivor: Fight Back");
+            LanguageAPI.Add(achievementPrefix + "DECISIVESTRIKE" + achievementAffix + "DESCRIPTION", "As a survivor, defeat the teleporter boss while below 10% health.");
             #endregion
 
             #region Keywords
-            LanguageAPI.Add("KEYWORD_INFURIATING", "<style=cKeywordName>Infuriating</style><style=cSub>Deal <style=cIsDamage>extra damage</style> to enemies facing you.</style>");
             LanguageAPI.Add("KEYWORD_CHANNELLING", "<style=cKeywordName>Channelling</style><style=cSub>Controls are <style=cDeath>disabled</style> for the duration of the ability.</style>");
             LanguageAPI.Add("KEYWORD_FRAGILE", "<style=cKeywordName>Fragile</style><style=cSub><style=cIsDamage>Taking damage</style> cancels the ability.</style>");
             #endregion

@@ -2,8 +2,6 @@
 using RoR2;
 using RoR2.Skills;
 using System;
-using System.Collections.Generic;
-using CamperMod;
 using UnityEngine;
 
 namespace CamperMod.Modules
@@ -30,9 +28,9 @@ namespace CamperMod.Modules
             skillLocator.special = CreateGenericSkillWithSkillFamily(targetPrefab, "Special");
 
             skillLocator.passiveSkill.enabled = true;
-            skillLocator.passiveSkill.skillNameToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_PASSIVE_PLUNDERERS_NAME";
-            skillLocator.passiveSkill.skillDescriptionToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_PASSIVE_PLUNDERERS_DESCRIPTION";
-            skillLocator.passiveSkill.icon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texPlunderers");
+            skillLocator.passiveSkill.skillNameToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_PASSIVE_OBJECTOFOBSESSION_NAME";
+            skillLocator.passiveSkill.skillDescriptionToken = CamperPlugin.DEVELOPER_PREFIX + "_CAMPER_BODY_PASSIVE_OBJECTOFOBSESSION_DESCRIPTION";
+            skillLocator.passiveSkill.icon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texObjectOfObsession");
         }
 
         public static GenericSkill CreateGenericSkillWithSkillFamily(GameObject targetPrefab, string familyName, bool hidden = false)
@@ -146,7 +144,6 @@ namespace CamperMod.Modules
             skillDef.keywordTokens = skillDefInfo.keywordTokens;
 
             CamperMod.Modules.Content.AddSkillDef(skillDef);
-
 
             return skillDef;
         }

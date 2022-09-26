@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using CamperMod;
+using RoR2;
 using RoR2.ContentManagement;
 using RoR2.Skills;
 using System;
@@ -101,7 +102,6 @@ namespace CamperMod.Modules
         }
         public static void AddUnlockableDef(UnlockableDef unlockableDef)
         {
-
             ContentPacks.unlockableDefs.Add(unlockableDef);
         }
         public static void AddSkillDef(SkillDef skillDef)
@@ -133,6 +133,7 @@ namespace CamperMod.Modules
 
         public static void AddNetworkSoundEventDef(NetworkSoundEventDef networkSoundEventDef)
         {
+
             ContentPacks.networkSoundEventDefs.Add(networkSoundEventDef);
         }
     }

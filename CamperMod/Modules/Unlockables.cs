@@ -12,14 +12,14 @@ namespace CamperMod.Modules
     internal static class Unlockables
     {
         private static readonly HashSet<string> usedRewardIds = new HashSet<string>();
-        public static List<AchievementDef> achievementDefs = new List<AchievementDef>();
-        public static List<UnlockableDef> unlockableDefs = new List<UnlockableDef>();
-        private static readonly List<(AchievementDef achDef, UnlockableDef unlockableDef, string unlockableName)> moddedUnlocks = new List<(AchievementDef achDef, UnlockableDef unlockableDef, string unlockableName)>();
+        internal static List<AchievementDef> achievementDefs = new List<AchievementDef>();
+        internal static List<UnlockableDef> unlockableDefs = new List<UnlockableDef>();
+        private static readonly List<(AchievementDef achDef, UnlockableDef unlockableDef, String unlockableName)> moddedUnlocks = new List<(AchievementDef achDef, UnlockableDef unlockableDef, string unlockableName)>();
 
         private static bool addingUnlockables;
         public static bool ableToAdd { get; private set; } = false;
 
-        public static UnlockableDef CreateNewUnlockable(UnlockableInfo unlockableInfo)
+        internal static UnlockableDef CreateNewUnlockable(UnlockableInfo unlockableInfo)
         {
             UnlockableDef newUnlockableDef = ScriptableObject.CreateInstance<UnlockableDef>();
 
@@ -28,16 +28,12 @@ namespace CamperMod.Modules
             newUnlockableDef.getHowToUnlockString = unlockableInfo.HowToUnlockString;
             newUnlockableDef.getUnlockedString = unlockableInfo.UnlockedString;
             newUnlockableDef.sortScore = unlockableInfo.SortScore;
+            newUnlockableDef.achievementIcon = unlockableInfo.acquireSprite;
 
             return newUnlockableDef;
         }
 
-        [Obsolete("The bool parameter serverTracked is redundant. Instead, pass in a BaseServerAchievement type if it is server tracked, or nothing if it's not")]
         public static UnlockableDef AddUnlockable<TUnlockable>(bool serverTracked) where TUnlockable : BaseAchievement, IModdedUnlockableDataProvider, new()
-        {
-            return AddUnlockable<TUnlockable>(null);
-        }
-        public static UnlockableDef AddUnlockable<TUnlockable>(Type serverTrackerType = null) where TUnlockable : BaseAchievement, IModdedUnlockableDataProvider, new()
         {
             TUnlockable instance = new TUnlockable();
 
@@ -54,7 +50,7 @@ namespace CamperMod.Modules
                 descriptionToken = instance.AchievementDescToken,
                 achievedIcon = instance.Sprite,
                 type = instance.GetType(),
-                serverTrackerType = serverTrackerType,
+                serverTrackerType = (serverTracked ? instance.GetType() : null),
             };
 
             UnlockableDef unlockableDef = CreateNewUnlockable(new UnlockableInfo
@@ -62,7 +58,8 @@ namespace CamperMod.Modules
                 Name = instance.UnlockableIdentifier,
                 HowToUnlockString = instance.GetHowToUnlock,
                 UnlockedString = instance.GetUnlocked,
-                SortScore = 200
+                SortScore = 200,
+                acquireSprite = instance.Sprite
             });
 
             unlockableDefs.Add(unlockableDef);
@@ -80,10 +77,10 @@ namespace CamperMod.Modules
             return unlockableDef;
         }
 
-        public static ILCursor CallDel_<TDelegate>(this ILCursor cursor, TDelegate target, out int index)
+        public static ILCursor CallDel_<TDelegate>(this ILCursor cursor, TDelegate target, out Int32 index)
 where TDelegate : Delegate
         {
-            index = cursor.EmitDelegate(target);
+            index = cursor.EmitDelegate<TDelegate>(target);
             return cursor;
         }
         public static ILCursor CallDel_<TDelegate>(this ILCursor cursor, TDelegate target)
@@ -103,10 +100,10 @@ where TDelegate : Delegate
                 x => x.MatchLdloc(1)
             );
 
-            void EmittedDelegate(List<AchievementDef> list, Dictionary<string, AchievementDef> map, List<string> identifiers)
+            void EmittedDelegate(List<AchievementDef> list, Dictionary<String, AchievementDef> map, List<String> identifiers)
             {
                 ableToAdd = false;
-                for (int i = 0; i < moddedUnlocks.Count; ++i)
+                for (Int32 i = 0; i < moddedUnlocks.Count; ++i)
                 {
                     var (ach, unl, unstr) = moddedUnlocks[i];
                     if (ach is null) continue;
@@ -118,20 +115,36 @@ where TDelegate : Delegate
 
             _ = cursor.Emit(OpCodes.Ldarg_0);
             _ = cursor.Emit(OpCodes.Ldsfld, f1);
-            _ = cursor.EmitDelegate<Action<List<AchievementDef>, Dictionary<string, AchievementDef>, List<string>>>(EmittedDelegate);
+            _ = cursor.EmitDelegate<Action<List<AchievementDef>, Dictionary<String, AchievementDef>, List<String>>>(EmittedDelegate);
             _ = cursor.Emit(OpCodes.Ldloc_1);
         }
 
-        public struct UnlockableInfo
+
+        internal struct UnlockableInfo
         {
-            public string Name;
-            public Func<string> HowToUnlockString;
-            public Func<string> UnlockedString;
-            public int SortScore;
+            internal string Name;
+            internal Func<string> HowToUnlockString;
+            internal Func<string> UnlockedString;
+            internal int SortScore;
+            internal Sprite acquireSprite;
         }
     }
 
-    public interface IModdedUnlockableDataProvider
+    internal static class ArrayHelper
+    {
+        public static T[] Append<T>(ref T[] array, List<T> list)
+        {
+            var orig = array.Length;
+            var added = list.Count;
+            Array.Resize<T>(ref array, orig + added);
+            list.CopyTo(array, orig);
+            return array;
+        }
+
+        public static Func<T[], T[]> AppendDel<T>(List<T> list) => (r) => Append(ref r, list);
+    }
+
+    internal interface IModdedUnlockableDataProvider
     {
         string AchievementIdentifier { get; }
         string UnlockableIdentifier { get; }
@@ -144,18 +157,17 @@ where TDelegate : Delegate
         Func<string> GetUnlocked { get; }
     }
 
-    //fuck your internal i'm a slut
-    public abstract class ModdedUnlockable : BaseAchievement, IModdedUnlockableDataProvider
+    internal abstract class ModdedUnlockable : BaseAchievement, IModdedUnlockableDataProvider
     {
         #region Implementation
         public void Revoke()
         {
-            if (userProfile.HasAchievement(AchievementIdentifier))
+            if (base.userProfile.HasAchievement(this.AchievementIdentifier))
             {
-                userProfile.RevokeAchievement(AchievementIdentifier);
+                base.userProfile.RevokeAchievement(this.AchievementIdentifier);
             }
 
-            userProfile.RevokeUnlockable(UnlockableCatalog.GetUnlockableDef(UnlockableIdentifier));
+            base.userProfile.RevokeUnlockable(UnlockableCatalog.GetUnlockableDef(this.UnlockableIdentifier));
         }
         #endregion
 
@@ -181,7 +193,7 @@ where TDelegate : Delegate
         {
             base.OnUninstall();
         }
-        public override float ProgressForAchievement() => base.ProgressForAchievement();
+        public override Single ProgressForAchievement() => base.ProgressForAchievement();
         public override BodyIndex LookUpRequiredBodyIndex()
         {
             return base.LookUpRequiredBodyIndex();
@@ -190,19 +202,5 @@ where TDelegate : Delegate
         public override void OnBodyRequirementMet() => base.OnBodyRequirementMet();
         public override bool wantsBodyCallbacks { get => base.wantsBodyCallbacks; }
         #endregion
-    }
-
-    public static class ArrayHelper
-    {
-        public static T[] Append<T>(ref T[] array, List<T> list)
-        {
-            var orig = array.Length;
-            var added = list.Count;
-            Array.Resize(ref array, orig + added);
-            list.CopyTo(array, orig);
-            return array;
-        }
-
-        public static Func<T[], T[]> AppendDel<T>(List<T> list) => (r) => Append(ref r, list);
     }
 }
