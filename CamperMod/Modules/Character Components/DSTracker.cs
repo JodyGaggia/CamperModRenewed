@@ -62,9 +62,9 @@ namespace CamperMod.Modules
                 this.indicator.targetTransform = (this.trackingTarget ? this.trackingTarget.transform : null);
             }
 
-            if(characterBody.skillLocator.special.stock == 0) this.indicator.active = false;
-            else this.indicator.active = true;
-            
+            // idk if there's a better way to do this
+            if (characterBody.skillLocator.special.IsReady()) this.indicator.active = true;
+            else this.indicator.active = false;    
         }
 
         private void SearchForTarget(Ray aimRay)

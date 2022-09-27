@@ -62,9 +62,6 @@ namespace CamperMod.Modules
 
             LanguageAPI.Add(prefix + "UTILITY_SPRINTBURST_NAME", "Sprint Burst");
             LanguageAPI.Add(prefix + "UTILITY_SPRINTBURST_DESCRIPTION", "Run at <style=cIsUtility>300%</style> movespeed. <style=cIsUtility>Moonwalking</style> grants a stacking movement speed and attack speed buff. <style=cIsDamage>360s deal damage.</style>");
-
-            LanguageAPI.Add(prefix + "UTILITY_BALANCEDLANDING_NAME", "BalancedLanding");
-            LanguageAPI.Add(prefix + "UTILITY_BALANCEDLANDING_DESCRIPTION", "smash.");
             #endregion
 
             #region Special
@@ -75,7 +72,7 @@ namespace CamperMod.Modules
             LanguageAPI.Add(prefix + "SPECIAL_MEDKIT_DESCRIPTION", $"<style=cIsHealth>Fragile.</style> <style=cArtifact>Channelling.</style> Heal yourself for <style=cIsHealing>{200f * StaticValues.medkitHPSCoefficient}% maximum HP</style> every second for <style=cIsUtility>{StaticValues.medkitDuration} seconds.</style>");
 
             LanguageAPI.Add(prefix + "SPECIAL_DECISIVESTRIKE_NAME", "Decisive Strike");
-            LanguageAPI.Add(prefix + "SPECIAL_DECISIVESTRIKE_DESCRIPTION", $"Dash to a targetted enemy, dealing <style=cIsDamage>{100f * StaticValues.decisiveStrikeDamageCoefficient}% damage</style>. <style=cIsHealing>Heal</style> for a portion of the damage dealt.");
+            LanguageAPI.Add(prefix + "SPECIAL_DECISIVESTRIKE_DESCRIPTION", $"Dash to a targetted enemy, dealing <style=cIsDamage>{100f * StaticValues.decisiveStrikeDamageCoefficient}% damage</style>. <style=cIsHealing>Heal for a portion of the damage dealt</style>. Kills <style=cIsUtility>reset this cooldown</style>.");
             #endregion
 
             #region Achievements
@@ -95,7 +92,7 @@ namespace CamperMod.Modules
             LanguageAPI.Add(achievementPrefix + "MEDKIT" + achievementAffix + "DESCRIPTION", "As a survivor, heal more than half your health using medkits at once.");
 
             LanguageAPI.Add(achievementPrefix + "DECISIVESTRIKE" + achievementAffix + "NAME", "Survivor: Fight Back");
-            LanguageAPI.Add(achievementPrefix + "DECISIVESTRIKE" + achievementAffix + "DESCRIPTION", "As a survivor, defeat the teleporter boss while below 10% health.");
+            LanguageAPI.Add(achievementPrefix + "DECISIVESTRIKE" + achievementAffix + "DESCRIPTION", "As a survivor, defeat the teleporter boss while below 20% health.");
             #endregion
 
             #region Keywords

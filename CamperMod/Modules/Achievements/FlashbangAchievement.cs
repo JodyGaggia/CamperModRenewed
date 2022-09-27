@@ -1,5 +1,4 @@
 ﻿using RoR2;
-using UnityEngine;
 
 namespace CamperMod.Modules.Achievements
 {
@@ -26,12 +25,10 @@ namespace CamperMod.Modules.Achievements
 
         private void GlobalEventManager_onCharacterDeathGlobal(DamageReport obj)
         {
-            foreach (PlayerCharacterMasterController player in PlayerCharacterMasterController.instances)
+            CharacterMaster playerMaster = PlayerCharacterMasterController.instances[0].master;
+            if (obj.attacker == playerMaster.GetBodyObject())
             {
-                if (obj.attacker == player.master.GetBodyObject())
-                {
-                    if (player.master.GetBody().HasBuff(RoR2Content.Buffs.Cloak)) Grant();
-                }
+                if (playerMaster.GetBody().HasBuff(RoR2Content.Buffs.Cloak)) Grant();
             }
         }
 

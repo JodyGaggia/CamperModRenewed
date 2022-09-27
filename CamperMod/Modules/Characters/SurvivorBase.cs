@@ -39,7 +39,7 @@ namespace CamperMod.Modules.Survivors
 
         protected virtual void InitializeSurvivor()
         {
-            RegisterNewSurvivor(bodyPrefab, displayPrefab, Color.grey, survivorTokenPrefix, characterUnlockableDef, bodyInfo.sortPosition);
+            RegisterNewSurvivor(bodyPrefab, displayPrefab, Color.red, survivorTokenPrefix, characterUnlockableDef, bodyInfo.sortPosition);
         }
 
         protected virtual void InitializeDisplayPrefab()

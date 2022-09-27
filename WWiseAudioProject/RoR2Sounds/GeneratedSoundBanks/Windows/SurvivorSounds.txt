@@ -1,6 +1,5 @@
 Event	ID	Name			Wwise Object Path	Notes
 	251611133	WinterExplode			\Default Work Unit\WinterExplode	
-	400910458	PlayMenuSounds			\Default Work Unit\PlayMenuSounds	
 	1724675634	Play_player_footstep			\Default Work Unit\Play_player_footstep	
 	1745229328	FlashbangDrop			\Default Work Unit\FlashbangDrop	
 	2779295623	FirecrackerExplode			\Default Work Unit\FirecrackerExplode	
@@ -32,7 +31,6 @@ In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
 	683125542	FlashbangExplode02	C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\SFX\FlashbangExplode02_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixxer\SFX mixer\sounds\FlashbangExplodeContainer\FlashbangExplode02		29807
 	696996759	HealingSound03	C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\SFX\HealingSound03_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixxer\SFX mixer\sounds\HealingContainer\HealingSound03		1627
 	877098815	FlashbangDrop02	C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\SFX\FlashbangDrop02_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixxer\SFX mixer\sounds\FlashbangDropContainer\FlashbangDrop02		4631
-	893005391	Menu Theme	C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\SFX\Menu Theme_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixxer\SFX mixer\sounds\MenuMusic\Menu Theme		75318
 	901320844	Footstep08	C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\SFX\Footstep08_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixxer\SFX mixer\sounds\Footsteps\Footstep08		2803
 	920217821	FlashbangDrop03	C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\SFX\FlashbangDrop03_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixxer\SFX mixer\sounds\FlashbangDropContainer\FlashbangDrop03		5267
 	943301928	FlashbangExplode03	C:\Users\Jody\source\repos\sladoinki\CamperModRenewed\WWiseAudioProject\RoR2Sounds\.cache\Windows\SFX\FlashbangExplode03_3F75BDB9.wem		\Actor-Mixer Hierarchy\Default Work Unit\Master Mixxer\SFX mixer\sounds\FlashbangExplodeContainer\FlashbangExplode03		31695

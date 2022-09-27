@@ -31,7 +31,7 @@ namespace CamperMod.Modules.Survivors
             maxHealth = 80f,
             healthRegen = 2.5f,
             armor = 5f,
-            damageGrowth = 3.7f,
+            damageGrowth = 2.7f,
 
             jumpCount = 1,
         };
@@ -51,8 +51,7 @@ namespace CamperMod.Modules.Survivors
 
         public override ItemDisplaysBase itemDisplays => new CamperItemDisplays();
 
-                                                                          //if you have more than one character, easily create a config to enable/disable them like this
-        public override ConfigEntry<bool> characterEnabledConfig => null; //Modules.Config.CharacterEnableConfig(bodyName);
+        public override ConfigEntry<bool> characterEnabledConfig => null; 
 
         private static UnlockableDef masterySkinUnlockableDef;
         private static UnlockableDef winterFirecrackerUnlockableDef;
@@ -65,7 +64,7 @@ namespace CamperMod.Modules.Survivors
             base.InitializeCharacter();
             AddTrackerComponent();
 
-            this.displayPrefab.AddComponent<SelectSound>();
+            this.bodyPrefab.GetComponent<CharacterBody>().bodyColor = Color.red;
         }
 
         private void AddTrackerComponent()
@@ -76,7 +75,7 @@ namespace CamperMod.Modules.Survivors
             tracker.maxTrackingAngle = 20f;
         }
 
-        // there's definitely (probably) a better way of doing this since im using RegisterAchievement() but idk how to fix it
+        // there's definitely (probably) a better way of doing this since im using RegisterAchievement() but idk how
         // L
         public override void InitializeUnlockables()
         {

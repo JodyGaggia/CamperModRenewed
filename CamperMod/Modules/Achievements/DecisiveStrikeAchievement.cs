@@ -47,7 +47,7 @@ namespace CamperMod.Modules.Achievements
 
             private void BossGroup_onBossGroupDefeatedServer(BossGroup obj)
             {
-                HealthComponent playerHealthComponent = base.networkUser.GetCurrentBody().healthComponent;
+                HealthComponent playerHealthComponent = PlayerCharacterMasterController.instances[0].master.GetBody().healthComponent;
                 if (playerHealthComponent.health < playerHealthComponent.fullHealth * 0.2f)
                 {
                     Grant();

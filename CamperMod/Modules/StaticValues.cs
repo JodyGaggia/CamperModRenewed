@@ -9,7 +9,7 @@
             "With an ounce of promise of returning to their prior lives, they push relentlessly through this new realm, Petrichor V.";
 
         // Passive
-        internal const float passiveFacingDamageMultiplier = 0.25f;
+        internal const float passiveFacingDamageMultiplier = 0.3f;
 
         // Primary
         internal const float teabagDamageCoefficient = 0.4f;

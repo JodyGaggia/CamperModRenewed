@@ -3,8 +3,11 @@ using EntityStates;
 using RoR2;
 using RoR2.Audio;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UIElements;
 
 namespace CamperMod.SkillStates
 {
@@ -13,17 +16,19 @@ namespace CamperMod.SkillStates
         public static string hitboxName = "DecisiveStrikeHitbox";
         public static float baseDuration = 0.8f;
         public static float damageCoefficient = StaticValues.decisiveStrikeDamageCoefficient;
-        public static float basePushForce = 350f;
+        public static float basePushForce = 250f;
         public static float healPercentage = 0.15f;
 
         private GameObject targetEnemy;
+        private CharacterMotor targetEnemyMotor;
         private Vector3 moveDirection;
         private Vector3 enemyPosition;
         private float duration;
         private float pushForce;
         private float stopwatch;
         private float damage;
-        private float cachedEnemyHealth;
+        private bool shouldRefreshCharge;
+        private readonly List<HurtBox> results = new List<HurtBox>();
 
         public override void OnEnter()
         {
@@ -47,10 +52,11 @@ namespace CamperMod.SkillStates
                 base.characterMotor.Motor.RebuildCollidableLayers();
                 base.characterMotor.Motor.ForceUnground();
 
-                this.cachedEnemyHealth = targetedHurtbox.healthComponent.health;
                 this.targetEnemy = targetedHurtbox.healthComponent.gameObject;
+                this.targetEnemyMotor = this.targetEnemy.GetComponent<CharacterMotor>();
+
                 this.moveDirection = (this.targetEnemy.transform.position - base.transform.position).normalized;
-                this.enemyPosition = targetEnemy.transform.position - new Vector3(this.moveDirection.x * 3f, this.moveDirection.y, this.moveDirection.z * 3f);
+                this.enemyPosition = this.targetEnemy.transform.position - new Vector3(this.moveDirection.x * 3f, this.moveDirection.y, this.moveDirection.z * 3f);
             }
 
             base.PlayAnimation("FullBody, Override", "Kick", "Kick.playbackRate", this.duration);
@@ -60,21 +66,17 @@ namespace CamperMod.SkillStates
         {
             base.FixedUpdate();
 
-            if(base.isGrounded || targetEnemy != null)
+            if(base.isGrounded || this.targetEnemy != null) base.characterMotor.velocity = Vector3.zero;
+
+            if (this.targetEnemy != null)
             {
                 base.characterDirection.forward = this.moveDirection;
-                base.characterMotor.velocity = Vector3.zero;
-            }
-
-            if (targetEnemy != null)
-            {
                 stopwatch += Time.fixedDeltaTime * 2f;
 
                 if (base.isAuthority)
                 {
-                    // Freeze enemy
-                    CharacterMotor enemyMotor = this.targetEnemy.GetComponent<CharacterMotor>();
-                    if (enemyMotor) enemyMotor.velocity = Vector3.zero;
+                    // Ensure enemy isn't moving
+                    this.targetEnemyMotor.velocity = Vector3.zero;
 
                     // Teleport to enemy
                     Vector3 newPosition = Vector3.Lerp(base.transform.position, this.enemyPosition, this.stopwatch / this.duration);
@@ -85,14 +87,25 @@ namespace CamperMod.SkillStates
             // Fire attack after elapsed time
             if (base.fixedAge >= this.duration)
             {
+                if(this.targetEnemy != null) this.targetEnemyMotor.Motor.ForceUnground();
+
                 if (FireAttack())
                 {
+                    if (this.results.Count > 0)
+                    {
+                        foreach (HurtBox hurtBox in results)
+                        {
+                            if (hurtBox.healthComponent.health <= 0) this.shouldRefreshCharge = true;
+                            break;
+                        }
+                    }
+
                     base.AddRecoil(5f, 8f, 5f, 8f);
                     AkSoundEngine.PostEvent("DecisiveStrike", base.gameObject);
 
                     if (NetworkServer.active)
                     {
-                        if (base.healthComponent) base.healthComponent.Heal(this.damage * DecisiveStrike.healPercentage, new ProcChainMask());
+                        if (base.healthComponent) base.healthComponent.Heal(this.damage * DecisiveStrike.healPercentage * this.results.Count, new ProcChainMask());
                     }
                 }
 
@@ -105,7 +118,7 @@ namespace CamperMod.SkillStates
             base.gameObject.layer = LayerIndex.defaultLayer.intVal;
             base.characterMotor.Motor.RebuildCollidableLayers();
 
-            if (this.damage >= this.cachedEnemyHealth) base.characterBody.skillLocator.special.AddOneStock();
+            if (this.shouldRefreshCharge) base.characterBody.skillLocator.special.AddOneStock();
 
             base.OnExit();
         }
@@ -120,7 +133,6 @@ namespace CamperMod.SkillStates
             {
                 hitBoxGroup = Array.Find<HitBoxGroup>(modelTransform.GetComponents<HitBoxGroup>(), (HitBoxGroup element) => element.groupName == DecisiveStrike.hitboxName);
             }
-
             OverlapAttack attack = new OverlapAttack();
             attack.damageType = DamageType.Generic;
             attack.attacker = base.gameObject;
@@ -129,12 +141,12 @@ namespace CamperMod.SkillStates
             attack.damage = this.damage;
             attack.procCoefficient = 1f;
             attack.hitEffectPrefab = null;
-            attack.forceVector = base.characterDirection.forward;
+            attack.forceVector = this.moveDirection;
             attack.pushAwayForce = this.pushForce;
             attack.hitBoxGroup = hitBoxGroup;
             attack.isCrit = base.RollCrit();
             attack.impactSound = new NetworkSoundEventIndex();
-            return attack.Fire();
+            return(attack.Fire(this.results));
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()

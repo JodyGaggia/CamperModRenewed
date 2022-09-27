@@ -11,7 +11,7 @@
 	<StreamedFiles/>
 	<MediaFilesNotInAnyBank/>
 	<SoundBanks>
-		<SoundBank Id="682534779" Language="SFX" Hash="118715336">
+		<SoundBank Id="682534779" Language="SFX" Hash="288521944">
 			<ObjectPath>\SoundBanks\Default Work Unit\SurvivorSounds</ObjectPath>
 			<ShortName>SurvivorSounds</ShortName>
 			<Path>SurvivorSounds.bnk</Path>
@@ -141,14 +141,6 @@
 						<File Id="982075321" Language="SFX">
 							<ShortName>Footstep10.wav</ShortName>
 							<Path>SFX\Footstep10_3F75BDB9.wem</Path>
-						</File>
-					</IncludedMemoryFiles>
-				</Event>
-				<Event Id="400910458" Name="PlayMenuSounds" ObjectPath="\Events\Default Work Unit\PlayMenuSounds">
-					<IncludedMemoryFiles>
-						<File Id="893005391" Language="SFX">
-							<ShortName>Menu Theme.wav</ShortName>
-							<Path>SFX\Menu Theme_3F75BDB9.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
