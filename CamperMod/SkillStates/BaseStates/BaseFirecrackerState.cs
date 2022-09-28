@@ -66,7 +66,7 @@ namespace CamperMod.SkillStates
                 if(this.firecracker.transform.position.y < this.immediateGroundBeneath.y)
                 {
                     this.firecracker.transform.position = this.immediateGroundBeneath;
-                    this.firecracker.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                    this.firecracker.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                     this.permanentPositionSet = true;
                 }
             }
@@ -77,7 +77,7 @@ namespace CamperMod.SkillStates
                 {
                     if (!this.hasExploded)
                     {
-                        ApplyDamageAndForceToPlayers();
+                        ApplyDamageAndForceToPlayers(CamperPlugin.FirecrackersAffectOthers.Value);
                         ExplodeFirecracker(damageType);
                     }
                     this.outer.SetNextStateToMain();
@@ -89,14 +89,14 @@ namespace CamperMod.SkillStates
         {
             if (!this.hasExploded)
             {
-                ApplyDamageAndForceToPlayers();
+                ApplyDamageAndForceToPlayers(CamperPlugin.FirecrackersAffectOthers.Value);
                 ExplodeFirecracker(damageType);
             }
 
             base.OnExit();
         }
 
-        private void ApplyDamageAndForceToPlayers()
+        private void ApplyDamageAndForceToPlayers(bool affectOtherPlayers)
         {
             foreach (PlayerCharacterMasterController player in PlayerCharacterMasterController.instances)
             {
@@ -149,7 +149,8 @@ namespace CamperMod.SkillStates
                             }
                         }
                     }
-                }
+                    if (!affectOtherPlayers) return;
+                } 
             }
         }
 
@@ -185,24 +186,23 @@ namespace CamperMod.SkillStates
 
         private Vector3 GetDropPos()
         {
-            Vector3 forwardDirection = base.inputBank.moveVector.normalized;
+            Vector3 moveDirection = base.inputBank.moveVector.normalized;
             Vector3 currentCharacterPosition = base.transform.position;
-            Vector3 currentCharacterPositionForwardOffset = currentCharacterPosition + (2f * forwardDirection);
 
             // Grab ground beneath player (if existing)
-            if (Physics.Raycast(currentCharacterPositionForwardOffset, base.transform.TransformDirection(Vector3.down), out RaycastHit hit))
+            if (Physics.Raycast(currentCharacterPosition, base.transform.TransformDirection(Vector3.down), out RaycastHit hit))
             {
                 this.immediateGroundBeneath = hit.point + (BaseFirecrackerState.distanceAboveGroundOffset * Vector3.up);
 
                 // Check if character is within 5 meters of the ground
-                if (Vector3.Distance(immediateGroundBeneath, base.transform.position) <= maxDropDistance)
-                    return currentCharacterPositionForwardOffset;
+                if (Vector3.Distance(immediateGroundBeneath, currentCharacterPosition) <= maxDropDistance)
+                    return currentCharacterPosition;
             }
             
             // Return a position right beneath the player if not within 5m of ground
             // Also set the duration to 0.05 so that it can explode instantly
             this.minimumDuration = 0.05f;
-            return currentCharacterPosition + (Vector3.down * distanceAwayFromPlayerOffset) + (-forwardDirection * distanceAwayFromPlayerOffset);
+            return currentCharacterPosition + (Vector3.down * distanceAwayFromPlayerOffset) + (-moveDirection * distanceAwayFromPlayerOffset);
         }
 
         public override InterruptPriority GetMinimumInterruptPriority()

@@ -11,7 +11,6 @@ namespace CamperMod.Modules
     internal static class Assets
     {
         #region camper's stuff
-        // particle effects
         internal static GameObject firecrackerMesh;
         internal static GameObject winterFirecrackerMesh;
         internal static GameObject flashbangMesh;
@@ -20,12 +19,9 @@ namespace CamperMod.Modules
         internal static GameObject flashbangExplosion;
         #endregion
 
-        // the assetbundle to load assets from
         internal static AssetBundle mainAssetBundle;
 
-        // CHANGE THIS
         private const string assetbundleName = "camperassets";
-        //change this to your project's name if/when you've renamed it
         private const string csProjName = "CamperMod";
         
         internal static void Initialize()
@@ -62,7 +58,6 @@ namespace CamperMod.Modules
 
         internal static void LoadSoundbank()
         {                                                                
-            //soundbank currently broke, but this is how you should load yours
             using (Stream manifestResourceStream2 = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{csProjName}.camperbank.bnk"))
             {
                 byte[] array = new byte[manifestResourceStream2.Length];

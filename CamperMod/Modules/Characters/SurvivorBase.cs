@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
 using RoR2;
-using System;
 using CamperMod.Modules.Characters;
 using UnityEngine;
 using System.Collections.Generic;
@@ -64,6 +63,7 @@ namespace CamperMod.Modules.Survivors
             survivorDef.descriptionToken = tokenPrefix + "DESCRIPTION";
             survivorDef.outroFlavorToken = tokenPrefix + "OUTRO_FLAVOR";
             survivorDef.mainEndingEscapeFailureFlavorToken = tokenPrefix + "OUTRO_FAILURE";
+            survivorDef.cachedName = tokenPrefix + "CACHEDNAME";
 
             survivorDef.desiredSortPosition = sortPosition;
             survivorDef.unlockableDef = unlockableDef;

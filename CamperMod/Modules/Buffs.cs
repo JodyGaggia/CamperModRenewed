@@ -13,7 +13,6 @@ namespace CamperMod.Modules
             moonwalkBuff = AddNewBuff("CamperMoonwalkBuff", Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texMoonwalkBuff"), Color.white, true, false);
         }
 
-        // simple helper method
         internal static BuffDef AddNewBuff(string buffName, Sprite buffIcon, Color buffColor, bool canStack, bool isDebuff)
         {
             BuffDef buffDef = ScriptableObject.CreateInstance<BuffDef>();

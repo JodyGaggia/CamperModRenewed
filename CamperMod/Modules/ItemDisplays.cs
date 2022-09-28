@@ -1,5 +1,4 @@
 ﻿using RoR2;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +14,6 @@ namespace CamperMod.Modules
             PopulateFromBody("LunarExploderBody"); //solely for the perfected crown
 
             PopulateCustomLightningArm();
-
-            //if you have any custom item displays to add here I would be very impressed
         }
 
         private static void PopulateFromBody(string bodyName)

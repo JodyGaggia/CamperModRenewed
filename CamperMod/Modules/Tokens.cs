@@ -14,7 +14,7 @@ namespace CamperMod.Modules
 
             string desc = "Survivors teabags to infuriate their enemies.<color=#CCD3E0>" + Environment.NewLine + Environment.NewLine;
             desc = desc + "< ! > Teabag's main damage comes from its infuriation aspect - target enemies that are also targetting you." + Environment.NewLine + Environment.NewLine;
-            desc = desc + $"< ! > Firecrackers instantly explode when {Modules.StaticValues.firecrackerInstantExplodeHeight}m above the ground, making it a great mobility tool." + Environment.NewLine + Environment.NewLine;
+            desc = desc + $"< ! > Firecrackers only explode upon releasing the activation key." + Environment.NewLine + Environment.NewLine;
             desc = desc + "< ! > Dead Hard can knock back and damage smaller enemies on collision, making it strong near map edges." + Environment.NewLine + Environment.NewLine;
             desc = desc + "< ! > Self Care briefly provides an armour boost so it can be used to mitigate a strong blow." + Environment.NewLine + Environment.NewLine;
 
@@ -42,7 +42,7 @@ namespace CamperMod.Modules
 
             #region Primary
             LanguageAPI.Add(prefix + "PRIMARY_TEABAG_NAME", "Teabag");
-            LanguageAPI.Add(prefix + "PRIMARY_TEABAG_DESCRIPTION", $"Teabag at an enemy for up to <style=cIsDamage>{100f * (StaticValues.teabagDamageCoefficient + StaticValues.passiveFacingDamageMultiplier + StaticValues.teabagRangeDamageCoefficient)}% damage.</style>");
+            LanguageAPI.Add(prefix + "PRIMARY_TEABAG_DESCRIPTION", $"Teabag at an enemy for up to <style=cIsDamage>{Math.Round(100f * (StaticValues.teabagDamageCoefficient + StaticValues.passiveFacingDamageMultiplier + StaticValues.teabagRangeDamageCoefficient))}% damage.</style>");
             #endregion
 
             #region Secondary
@@ -61,7 +61,7 @@ namespace CamperMod.Modules
             LanguageAPI.Add(prefix + "UTILITY_DEADHARD_DESCRIPTION", "Dash a short distance. <style=cIsUtility>You cannot be hit during the dash.</style>");
 
             LanguageAPI.Add(prefix + "UTILITY_SPRINTBURST_NAME", "Sprint Burst");
-            LanguageAPI.Add(prefix + "UTILITY_SPRINTBURST_DESCRIPTION", "Run at <style=cIsUtility>300%</style> movespeed. <style=cIsUtility>Moonwalking</style> grants a stacking movement speed and attack speed buff. <style=cIsDamage>360s deal damage.</style>");
+            LanguageAPI.Add(prefix + "UTILITY_SPRINTBURST_DESCRIPTION", "Run at <style=cIsUtility>300%</style> movespeed. Moonwalking grants a <style=cIsUtility>stacking movement speed and attack speed buff</style>. <style=cIsDamage>360s deal damage.</style>");
             #endregion
 
             #region Special
@@ -89,7 +89,7 @@ namespace CamperMod.Modules
             LanguageAPI.Add(achievementPrefix + "FLASHBANG" + achievementAffix + "DESCRIPTION", "As a survivor, kill an enemy while cloaked.");
 
             LanguageAPI.Add(achievementPrefix + "MEDKIT" + achievementAffix + "NAME", "Survivor: Self Taught");
-            LanguageAPI.Add(achievementPrefix + "MEDKIT" + achievementAffix + "DESCRIPTION", "As a survivor, heal more than half your health using medkits at once.");
+            LanguageAPI.Add(achievementPrefix + "MEDKIT" + achievementAffix + "DESCRIPTION", "As a survivor, heal more than a third of your health using medkits at once.");
 
             LanguageAPI.Add(achievementPrefix + "DECISIVESTRIKE" + achievementAffix + "NAME", "Survivor: Fight Back");
             LanguageAPI.Add(achievementPrefix + "DECISIVESTRIKE" + achievementAffix + "DESCRIPTION", "As a survivor, defeat the teleporter boss while below 20% health.");

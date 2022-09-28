@@ -23,7 +23,7 @@ namespace CamperMod.Modules.Survivors
             subtitleNameToken = CAMPER_PREFIX + "SUBTITLE",
 
             characterPortrait = Assets.mainAssetBundle.LoadAsset<Texture>("texCamperIcon"),
-            bodyColor = Color.white,
+            bodyColor = Color.red,
 
             crosshair = Modules.Assets.LoadCrosshair("Standard"),
             podPrefab = RoR2.LegacyResourcesAPI.Load<GameObject>("Prefabs/NetworkedObjects/SurvivorPod"),
@@ -64,7 +64,7 @@ namespace CamperMod.Modules.Survivors
             base.InitializeCharacter();
             AddTrackerComponent();
 
-            this.bodyPrefab.GetComponent<CharacterBody>().bodyColor = Color.red;
+            //this.bodyPrefab.GetComponent<CharacterBody>().bodyColor = Color.red;
         }
 
         private void AddTrackerComponent()
@@ -295,8 +295,8 @@ namespace CamperMod.Modules.Survivors
                 skillIcon = Modules.Assets.mainAssetBundle.LoadAsset<Sprite>("texMedkit"),
                 activationState = new EntityStates.SerializableEntityStateType(typeof(SkillStates.Medkit)),
                 activationStateMachineName = "Body",
-                baseMaxStock = 1, // 1
-                baseRechargeInterval = 15f, // 15
+                baseMaxStock = 1,
+                baseRechargeInterval = 15f,
                 beginSkillCooldownOnSkillEnd = true,
                 canceledFromSprinting = true,
                 forceSprintDuringState = false,

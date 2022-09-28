@@ -104,7 +104,6 @@ namespace CamperMod.Modules.Characters
 
     }
 
-    // for simplifying characterbody creation
     internal class BodyInfo
     {
         #region Character
@@ -112,10 +111,8 @@ namespace CamperMod.Modules.Characters
         public string bodyNameToken = "";
         public string subtitleNameToken = "";
 
-        // body prefab you're cloning for your character- commando is the safest
         public string bodyNameToClone = "Commando";
 
-        // the color of your characters name and skills and such in the lobby
         public Color bodyColor = Color.white;
 
         public Texture characterPortrait = null;

@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using CamperMod.Modules.Survivors;
 using R2API.Utils;
 using RoR2;
@@ -8,7 +9,6 @@ using System.Security.Permissions;
 [module: UnverifiableCode]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
-//rename this namespace
 namespace CamperMod
 {
     [BepInDependency("com.bepis.r2api", BepInDependency.DependencyFlags.HardDependency)]
@@ -28,10 +28,11 @@ namespace CamperMod
         public const string MODNAME = "CamperMod";
         public const string MODVERSION = "1.0.0";
 
-        // a prefix for name tokens to prevent conflicts
         public const string DEVELOPER_PREFIX = "SLAD";
 
         public static CamperPlugin instance;
+        protected ConfigFile ConfigFile { get; }
+        public static ConfigEntry<bool> FirecrackersAffectOthers { get; set; }
 
         private void Awake()
         {
@@ -46,34 +47,27 @@ namespace CamperMod
             Modules.Tokens.AddTokens(); // register name tokens
             Modules.ItemDisplays.PopulateDisplays(); // collect item display prefabs for use in our display rules
 
-            // survivor initialization
             new Camper().Initialize();
 
             new Modules.ContentPacks().Initialize();
 
+            SetUpConfig();
             Hook();
+        }
+
+        private void SetUpConfig()
+        {
+            FirecrackersAffectOthers = Config.Bind<bool>(
+                "Multiplayer",
+                "FirecrackersAffectOthers",
+                true,
+                "Determines whether firecracker explosions should damage and apply force to others in multiplayer."
+                );
         }
 
         private void Hook()
         {
-            // run hooks here, disabling one is as simple as commenting out the line
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            On.RoR2.Run.Start += Run_Start;
-        }
-
-        private void Run_Start(On.RoR2.Run.orig_Start orig, Run self)
-        {
-            orig(self);
-
-            foreach(PlayerCharacterMasterController player in PlayerCharacterMasterController.instances)
-            {
-                if(player != null)
-                {
-                    CharacterBody body = player.master.GetBody();
-
-                    if (body) Log.Debug("test");
-                }
-            }
         }
 
         private void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)

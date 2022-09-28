@@ -71,7 +71,7 @@ namespace CamperMod.SkillStates
             if (this.targetEnemy != null)
             {
                 base.characterDirection.forward = this.moveDirection;
-                stopwatch += Time.fixedDeltaTime * 2f;
+                stopwatch += Time.fixedDeltaTime;
 
                 if (base.isAuthority)
                 {
@@ -79,7 +79,7 @@ namespace CamperMod.SkillStates
                     this.targetEnemyMotor.velocity = Vector3.zero;
 
                     // Teleport to enemy
-                    Vector3 newPosition = Vector3.Lerp(base.transform.position, this.enemyPosition, this.stopwatch / this.duration);
+                    Vector3 newPosition = Vector3.Lerp(base.transform.position, this.enemyPosition, this.stopwatch / this.duration/3f);
                     base.characterMotor.Motor.SetPosition(newPosition);
                 }
             }

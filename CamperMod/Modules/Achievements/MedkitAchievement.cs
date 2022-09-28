@@ -65,7 +65,7 @@ namespace CamperMod.Modules.Achievements
                     float healAmount = 20f + (healthComponent.fullHealth * 0.05f * medkitCount);
                     healAmount += healAmount * rejuvRackCount;
 
-                    if(healAmount >= healthComponent.fullHealth / 4)
+                    if(healAmount >= healthComponent.fullHealth / 3)
                     {
                         Grant();
                     }
