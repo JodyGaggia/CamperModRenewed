@@ -5,7 +5,6 @@ Adds Claudette Morel and Nea Karlsson to Risk of Rain 2! Multiplayer compatible.
 
 # Introduction
 Got bored of teabagging your enemies in Dead by Daylight? How about you try it in Risk of Rain instead? 
-This mod adds your favourite crutch perks and items as usable abilities - complete with achievements and multiplayer compatibility.
 
 # Base Abilities
 ### Passive - Object of Obsession
@@ -74,7 +73,7 @@ This mod adds your favourite crutch perks and items as usable abilities - comple
 </table>
 
 # Special Thanks
-**Rob** - This would have been 10x harder without the survivor template. <br>
+**Rob** - This would have been 10x harder without the boilerplate. <br>
 **Shmoul** - Fixed a bug and helped with playtesting :)
 
 # Plans
